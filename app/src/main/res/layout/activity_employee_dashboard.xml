@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Employee.EmployeeDashboard">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primaryColor"
+                android:id="@+id/toolbar">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Profile"
+                        android:fontFamily="@font/poppinsbold"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="HardcodedText" />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/toolbar"
+                android:background="@color/primaryColor"/>
+
+            <ImageView
+                android:id="@+id/qrCode_ImageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/qrCode_ImageView"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_employee"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Full Name"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/fullName_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Your Name"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_employeenumber"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Employee Number"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/employeeNumber_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2020-2020"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_position"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Position"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/position_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Position"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_phonenumber"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Phone Number"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/phoneNumber_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="09999999999"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_date"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Date of Birth"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/dateOfBirth_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2/17/2024"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_green_email"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Email"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:textSize="15sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/email_TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="email@gmail.com"
+                                android:layout_marginStart="20dp"
+                                android:fontFamily="@font/poppinsbold"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                tools:ignore="HardcodedText" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

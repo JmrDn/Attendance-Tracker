@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".SelectRole">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/primaryColor"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome to Attendance Tracker"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Manage and Track your Employee's Time
+                                Efficiently Using Attendance Tracker"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_icon_attendance_tracker_2"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select your Role"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+            
+            <LinearLayout
+                android:id="@+id/admin_Button"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rounded_outline_button"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/adminButton"
+                tools:ignore="KeyboardInaccessibleWidget">
+
+
+                <ImageView
+                    android:id="@+id/admin_Imageview"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_green_admin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:layout_marginBottom="-10dp">
+
+                  <TextView
+                      android:id="@+id/textViewEmployeeTitle"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="10dp"
+                      android:layout_marginEnd="10dp"
+                      android:text="I am an Admin / HR"
+                      android:textColor="@color/black"
+                      android:fontFamily="@font/poppinsbold"
+                      android:textSize="13sp"
+                      tools:ignore="HardcodedText" />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="-5dp"
+                      android:layout_marginStart="10dp"
+                      android:text="Use this option if you want to capture Attendance of other Employee."
+                      android:textColor="@color/black"
+                      android:fontFamily="@font/poppinsmedium"
+                      android:textSize="12sp"
+                      tools:ignore="HardcodedText" />
+              </LinearLayout>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/employee_Button"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="20dp"
+                android:onClick="onButtonClicked"
+                android:background="@drawable/rounded_outline_button"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/adminButton"
+                tools:ignore="KeyboardInaccessibleWidget,OnClick">
+
+
+                <ImageView
+                    android:id="@+id/employee_Imageview"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_green_employee"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="-10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="I am an Employee"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppinsbold"
+                        android:textSize="13sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-5dp"
+                        android:layout_marginStart="10dp"
+                        android:text="Use this option if you want to mark Attendance as an Employee."
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textSize="12sp"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

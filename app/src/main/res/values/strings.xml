@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Attendance Tracker (NEW)</string>
+
+    <string name="invalid_dob_title">Invalid Date of Birth</string>
+    <string name="future_dob_message">We regret to inform you that the date of birth provided indicates a future date. Please ensure that you enter a valid and accurate date of birth that is not in the future.</string>
+    <string name="current_dob_message">We\'re sorry, but it appears that you entered today\'s date as your date of birth. Please note that the date of birth should reflect your actual birth date and cannot be set as the current date.</string>
+    <string name="min_age_dob_message">We regret to inform you that the date of birth you entered indicates that you are not yet of the minimum required age (15 years old) to sign up.</string>
+    <string name="past_dob_message">We regret to inform you that the date of birth entered appears to be too far in the past. Please ensure that you provide a valid and credible date of birth that aligns with your actual birth date.</string>
+</resources>
