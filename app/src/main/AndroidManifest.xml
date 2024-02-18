@@ -19,22 +19,22 @@
             android:name=".Admin.AdminSignup"
             android:exported="false" />
         <activity
-            android:name=".SelectRole"
+            android:name=".Employee.EmployeeLogin"
             android:exported="false" />
         <activity
-            android:name=".Employee.EmployeeDashboard"
+            android:name=".SelectRole"
             android:exported="false" />
         <activity
             android:name=".Admin.AdminLogin"
             android:exported="false" />
         <activity
-            android:name=".Employee.EmployeeLogin"
+            android:name=".Employee.EmployeeSignup"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Employee.EmployeeSignup"
+            android:name=".Employee.EmployeeDashboard"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

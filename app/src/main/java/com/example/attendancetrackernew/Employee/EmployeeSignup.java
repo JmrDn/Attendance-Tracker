@@ -556,6 +556,7 @@ public class EmployeeSignup extends AppCompatActivity {
         userDetails.put("accountType", "employeeAccount");
         userDetails.put("fullName", fullName);
         userDetails.put("email", email);
+        userDetails.put("employeeNumber", employeeNum);
         userDetails.put("userId", FirebaseAuth.getInstance().getUid());
 
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
