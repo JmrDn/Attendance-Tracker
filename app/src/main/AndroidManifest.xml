@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceTrackerNEW"
         tools:targetApi="31">
+        <activity
+            android:name=".Admin.AdminAddEmployee"
+            android:exported="false" />
+        <activity
+            android:name=".Employee.EmployeeUpdateProfile"
+            android:exported="false" />
+        <activity
+            android:name=".Admin.AdminListOfEmployees"
+            android:exported="false" />
+        <activity
+            android:name=".Employee.EmployeeDashboard"
+            android:exported="false" />
         <activity
             android:name=".Admin.AdminDashboard"
             android:exported="false" />
@@ -34,7 +55,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Employee.EmployeeDashboard"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

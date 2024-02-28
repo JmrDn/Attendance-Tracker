@@ -57,7 +57,7 @@
         android:id="@+id/adminName_Textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin"
+        android:text=""
         android:fontFamily="@font/poppinsmedium"
         android:layout_below="@id/welcome_Textview"
         android:textSize="20sp"

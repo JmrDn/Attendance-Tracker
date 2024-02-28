@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Employee.EmployeeUpdateProfile">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primaryColor"
+            android:elevation="2dp"
+            android:id="@+id/toolbar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Profile"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textColor="@color/white"
+                    android:layout_centerVertical="true"
+                    android:textSize="20sp"
+                    android:layout_marginStart="5dp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/primaryColor"/>
+
+        <TextView
+            android:id="@+id/updateYourProfile_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update your profile"
+            android:fontFamily="@font/poppinsbold"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/updateProfileDescription_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can update your profile to stay up to date"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppinsmedium"
+            android:textSize="15sp"
+            android:layout_below="@id/updateYourProfile_Textview"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            tools:ignore="HardcodedText" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_below="@+id/updateProfileDescription_Textview"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            app:cardElevation="2dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/lightgray_border_radius"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/fullName_Imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_employee"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/fullName_Imageview"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Full name"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            tools:ignore="HardcodedText" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/fullName_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/poppinsbold"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:padding="10dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/lightgray_border_radius"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/employeeNumber_Imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_employeenumber"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/employeeNumber_Imageview"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Employee Number"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            tools:ignore="HardcodedText" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/employeeNumber_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/poppinsbold"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:padding="10dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/lightgray_border_radius"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/position_Imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_position"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/position_Imageview"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Position"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            tools:ignore="HardcodedText" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/position_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/poppinsbold"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:padding="10dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/lightgray_border_radius"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/birthday_Imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_date_picker"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/birthday_Imageview"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date of Birth"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            tools:ignore="HardcodedText" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/birthday_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/poppinsbold"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:padding="10dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/lightgray_border_radius"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/phoneNumber_Imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_phonenumber"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/phoneNumber_Imageview"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phone Number"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            tools:ignore="HardcodedText" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/phoneNumber_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/poppinsbold"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:padding="10dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/updateProfile_Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Update Profile"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="18sp"
+                    android:padding="15dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+
+</ScrollView>

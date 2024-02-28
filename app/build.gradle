@@ -48,4 +48,12 @@ dependencies {
     //QR CODE
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
+    // Library for creating custom dialogs.
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
+
+    // Library for displaying customizable Toast messages.
+
+    // Library for Image loading library (Advance).
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
 }

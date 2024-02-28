@@ -14,6 +14,13 @@ public class EmployeeSharedPreferences {
         this.editor = sharedPreferences.edit();
 
     }
+    public void setImageURL(String imageURL){
+        editor.putString("imageURL", imageURL);
+        editor.apply();
+    }
+    public String getImageURL(){
+        return sharedPreferences.getString("imageURL", null);
+    }
 
     public void setFullName(String fullName){
         editor.putString("fullName", fullName);

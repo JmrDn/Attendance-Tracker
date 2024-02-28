@@ -75,6 +75,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/rounded_outline_button"
                 android:clickable="true"
+                android:onClick="onButtonClicked"
                 android:orientation="horizontal"
                 android:padding="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/adminButton"

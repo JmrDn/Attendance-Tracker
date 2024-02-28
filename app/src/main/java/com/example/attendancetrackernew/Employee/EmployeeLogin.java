@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.attendancetrackernew.R;
@@ -29,6 +30,7 @@ public class EmployeeLogin extends AppCompatActivity {
     AppCompatButton loginBtn;
     ProgressBar progressBar;
     EmployeeSharedPreferences employeeDetails;
+    TextView createNewAccBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,10 @@ public class EmployeeLogin extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.GONE);
             loginUser();
+        });
+
+        createNewAccBtn.setOnClickListener(v1->{
+            startActivity(new Intent(getApplicationContext(), EmployeeSignup.class));
         });
     }
 
@@ -122,36 +128,42 @@ public class EmployeeLogin extends AppCompatActivity {
                             if (documentSnapshot.exists()){
                                 String employeeNum = documentSnapshot.getString("employeeNumber");
 
-                                FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()){
-                                                    DocumentSnapshot document = task.getResult();
-
-                                                    if (document.exists()){
-                                                        String fullName = document.getString("fullName");
-                                                        String email = document.getString("email");
-                                                        String phoneNumber = document.getString("phoneNumber");
-                                                        String birthdate = document.getString("birthDate");
-                                                        String position = document.getString("position");
-
-                                                        employeeDetails.setFullName(fullName);
-                                                        employeeDetails.setEmail(email);
-                                                        employeeDetails.setPhoneNumber(phoneNumber);
-                                                        employeeDetails.setBirthday(birthdate);
-                                                        employeeDetails.setPosition(position);
-                                                        employeeDetails.setEmployeeNumber(employeeNum);
-                                                    }
-                                                }
-                                            }
-                                        });
+                                storeUserDetailsToSharedPref(employeeNum, employeeDetails);
                             }
                         }
                     }
                 });
     }
+    }
+
+    private void storeUserDetailsToSharedPref(String employeeNum, EmployeeSharedPreferences employeeDetails) {
+        FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()){
+                                String fullName = document.getString("fullName");
+                                String email = document.getString("email");
+                                String phoneNumber = document.getString("phoneNumber");
+                                String birthdate = document.getString("birthDate");
+                                String position = document.getString("position");
+                                String imageURL = document.getString("qrCodeImageURL");
+
+                                employeeDetails.setFullName(fullName);
+                                employeeDetails.setEmail(email);
+                                employeeDetails.setPhoneNumber(phoneNumber);
+                                employeeDetails.setBirthday(birthdate);
+                                employeeDetails.setPosition(position);
+                                employeeDetails.setEmployeeNumber(employeeNum);
+                                employeeDetails.setImageURL(imageURL);
+                            }
+                        }
+                    }
+                });
     }
 
     private void initWidgets() {
@@ -161,5 +173,26 @@ public class EmployeeLogin extends AppCompatActivity {
         progressBar = findViewById(R.id.progressbar);
 
         loginBtn = findViewById(R.id.login_Button);
+
+        createNewAccBtn = findViewById(R.id.createNewAcc_Textview);
+    }
+
+    @Override
+    protected void onStart() {
+       if (FirebaseAuth.getInstance().getCurrentUser() != null){
+           if (getApplicationContext() != null){
+               employeeDetails = new EmployeeSharedPreferences(this);
+
+               Intent intent = getIntent();
+
+               String employeeNumber = intent.getStringExtra("employeeNumber");
+
+               if (employeeNumber != null){
+                   storeUserDetailsToSharedPref(employeeNumber, employeeDetails);
+               }
+               startActivity(new Intent(getApplicationContext(), EmployeeDashboard.class));
+           }
+       }
+        super.onStart();
     }
 }

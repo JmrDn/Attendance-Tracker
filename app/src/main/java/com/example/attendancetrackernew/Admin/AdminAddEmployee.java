@@ -1,11 +1,10 @@
-package com.example.attendancetrackernew.Employee;
+package com.example.attendancetrackernew.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -14,8 +13,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -32,6 +29,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendancetrackernew.Employee.EmployeeDashboard;
+import com.example.attendancetrackernew.Employee.EmployeeLogin;
+import com.example.attendancetrackernew.Employee.EmployeeSharedPreferences;
+import com.example.attendancetrackernew.Employee.EmployeeSignup;
 import com.example.attendancetrackernew.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,8 +61,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EmployeeSignup extends AppCompatActivity {
-    String  qrCodeImageURL = "";
+public class AdminAddEmployee extends AppCompatActivity {
     String [] items = {"Office Staff", "Draftsman", "Engineer", "Labor"};
     ArrayAdapter<String> itemAdapter;
     AutoCompleteTextView positionACT;
@@ -69,7 +69,6 @@ public class EmployeeSignup extends AppCompatActivity {
     TextInputEditText birthdayET;
     TextInputEditText fullNameET;
     TextInputEditText employeeNumET;
-    TextInputEditText positionET;
     TextInputEditText passwordET;
     TextInputEditText confirmPasswordET;
     TextInputEditText emailET;
@@ -83,20 +82,16 @@ public class EmployeeSignup extends AppCompatActivity {
     TextInputLayout passwordTIL;
     TextInputLayout confirmPasswordTIL;
     TextInputLayout phoneNumberTIL;
-    AppCompatButton registerBtn;
+    AppCompatButton addBtn;
     TextView alreadyHaveAccBtn;
     ProgressBar progressBar;
     boolean noError = false;
     Bitmap scaledPngImage;
 
-    EmployeeSharedPreferences userDetails;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employee_signup);
-
+        setContentView(R.layout.activity_admin_add_employee);
         initWidgets();
         setUpToolbar();
         setPositionSelector();
@@ -106,8 +101,6 @@ public class EmployeeSignup extends AppCompatActivity {
 
         progressBar.setVisibility(View.GONE);
         setUpRegisterProcess();
-
-
 
 
     }
@@ -362,7 +355,7 @@ public class EmployeeSignup extends AppCompatActivity {
         phoneNumberTIL.setErrorEnabled(false);
     }
 
-    private void checkIfExist(String employeeNum, final ExistenceCallback callback) {
+    private void checkIfExist(String employeeNum, final EmployeeSignup.ExistenceCallback callback) {
         CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("employees");
 
         if (collectionReference != null) {
@@ -394,19 +387,19 @@ public class EmployeeSignup extends AppCompatActivity {
     }
 
     // Define a callback interface
-    public interface ExistenceCallback {
+    interface ExistenceCallback {
         void onExistenceChecked(boolean exists);
     }
 
 
 
     private void setUpRegisterProcess() {
-        registerBtn.setOnClickListener(v->{
+        addBtn.setOnClickListener(v->{
             disableError();
 
 
             progressBar.setVisibility(View.VISIBLE);
-            registerBtn.setVisibility(View.GONE);
+            addBtn.setVisibility(View.GONE);
             String fullName = fullNameET.getText().toString();
             String employeeNum = employeeNumET.getText().toString();
             String position = positionACT.getText().toString();
@@ -420,27 +413,27 @@ public class EmployeeSignup extends AppCompatActivity {
 
                 if (fullName.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     fullNameTIL.setError("Enter Full name");
                 }
                 else if (phoneNumber.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     phoneNumberTIL.setError("Enter Phone Number");
                 }
                 else if (employeeNum.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     employeeNumTIL.setError("Enter Employee Number");
                 }
                 else if(!employeeNum.isEmpty()){
-                    checkIfExist(employeeNum, new ExistenceCallback() {
+                    checkIfExist(employeeNum, new EmployeeSignup.ExistenceCallback() {
                         @Override
                         public void onExistenceChecked(boolean exists) {
                             // Use the 'exists' value here or pass it to another method
                             if (exists) {
                                 progressBar.setVisibility(View.GONE);
-                                registerBtn.setVisibility(View.VISIBLE);
+                                addBtn.setVisibility(View.VISIBLE);
                                 employeeNumTIL.setError("Already Exist");
                             }
                         }
@@ -449,38 +442,38 @@ public class EmployeeSignup extends AppCompatActivity {
                 }
                 else if (position.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     positionTIL.setError("Select Position");
                 }
                 else if (birthDate.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     birthdayTIL.setError("Select Birthdate");
                 }
                 else if (email.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     emailTIL.setError("Enter Email");
                 }
                 else if (password.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     passwordTIL.setError("Enter Password");
                 }
                 else if (confirmPassword.isEmpty()){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     confirmPasswordTIL.setError("Enter Email");
                 }
                 else if (!password.equals(confirmPassword) && !confirmPassword.equals(password)){
                     progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
+                    addBtn.setVisibility(View.VISIBLE);
                     passwordTIL.setError("Password not match");
                     confirmPasswordTIL.setError("Password not match");
                 }
                 else{
                     progressBar.setVisibility(View.VISIBLE);
-                    registerBtn.setVisibility(View.GONE);
+                    addBtn.setVisibility(View.GONE);
 
                     registerUser(fullName, employeeNum, position, birthDate, email, confirmPassword, phoneNumber);
                 }
@@ -488,7 +481,7 @@ public class EmployeeSignup extends AppCompatActivity {
             else{
                 Toast.makeText(getApplicationContext(), "Fill the empty fields", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
-                registerBtn.setVisibility(View.VISIBLE);
+                addBtn.setVisibility(View.VISIBLE);
             }
 
 
@@ -515,7 +508,7 @@ public class EmployeeSignup extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressBar.setVisibility(View.GONE);
-                        registerBtn.setVisibility(View.VISIBLE);
+                        addBtn.setVisibility(View.VISIBLE);
                         Toast.makeText(getApplicationContext(), "Failed to create account: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -523,20 +516,6 @@ public class EmployeeSignup extends AppCompatActivity {
 
     private void saveUserDetails(String fullName, String employeeNum, String position, String birthDate, String email,String phoneNumber) {
 
-        StorageReference qrCodeImageURLRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
-
-        qrCodeImageURLRef.getDownloadUrl()
-                .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()){
-                            qrCodeImageURL = task.getResult().toString();
-                        }
-                        else{
-                            Log.d("TAG", "Failed to get URL");
-                        }
-                    }
-                });
         HashMap<String, Object> employeeDetails = new HashMap<>();
 
         employeeDetails.put("fullName", fullName);
@@ -545,16 +524,8 @@ public class EmployeeSignup extends AppCompatActivity {
         employeeDetails.put("birthDate", birthDate);
         employeeDetails.put("email", email);
         employeeDetails.put("phoneNumber", phoneNumber);
-        employeeDetails.put("qrCodeImageURL", qrCodeImageURL);
 
-        userDetails = new EmployeeSharedPreferences(EmployeeSignup.this);
-        userDetails.setFullName(fullName);
-        userDetails.setEmployeeNumber(employeeNum);
-        userDetails.setPosition(position);
-        userDetails.setBirthday(birthDate);
-        userDetails.setEmail(email);
-        userDetails.setPhoneNumber(phoneNumber);
-        userDetails.setImageURL(qrCodeImageURL);
+    
 
         FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
                 .set(employeeDetails)
@@ -681,7 +652,7 @@ public class EmployeeSignup extends AppCompatActivity {
             }
             return true;
         });
-        
+
     }
 
     private void showDatePickerDialog() {
@@ -776,7 +747,7 @@ public class EmployeeSignup extends AppCompatActivity {
 
     private void initWidgets() {
         toolbar = findViewById(R.id.toolbar);
-        
+
         positionACT = findViewById(R.id.position_AutoCompleteTextView);
         birthdayET = findViewById(R.id.birthday_EditText);
         fullNameET = findViewById(R.id.fullName_EditText);
@@ -785,7 +756,7 @@ public class EmployeeSignup extends AppCompatActivity {
         passwordET = findViewById(R.id.password_EditText);
         confirmPasswordET = findViewById(R.id.confirmPassword_EditText);
         phoneNumberET = findViewById(R.id.phoneNumber_EditText);
-                
+
         birthdayTIL = findViewById(R.id.birthday_TextInputLayout);
         fullNameTIL = findViewById(R.id.fullName_TextInputLayout);
         positionTIL = findViewById(R.id.position_TextInputLayout);
@@ -795,12 +766,12 @@ public class EmployeeSignup extends AppCompatActivity {
         employeeNumTIL = findViewById(R.id.empNumber_TextInputLayout);
         phoneNumberTIL = findViewById(R.id.phoneNumber_TextInputLayout);
 
-        registerBtn = findViewById(R.id.register_Button);
+        addBtn = findViewById(R.id.add_Button);
 
         alreadyHaveAccBtn = findViewById(R.id.alreadyHaveAccount_Textview);
 
         progressBar = findViewById(R.id.progressbar);
-        
+
     }
 
     @Override
