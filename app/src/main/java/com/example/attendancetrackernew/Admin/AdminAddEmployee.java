@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -34,6 +35,7 @@ import com.example.attendancetrackernew.Employee.EmployeeLogin;
 import com.example.attendancetrackernew.Employee.EmployeeSharedPreferences;
 import com.example.attendancetrackernew.Employee.EmployeeSignup;
 import com.example.attendancetrackernew.R;
+import com.example.attendancetrackernew.SelectRole;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -83,7 +85,7 @@ public class AdminAddEmployee extends AppCompatActivity {
     TextInputLayout confirmPasswordTIL;
     TextInputLayout phoneNumberTIL;
     AppCompatButton addBtn;
-    TextView alreadyHaveAccBtn;
+
     ProgressBar progressBar;
     boolean noError = false;
     Bitmap scaledPngImage;
@@ -96,7 +98,6 @@ public class AdminAddEmployee extends AppCompatActivity {
         setUpToolbar();
         setPositionSelector();
         setBirthdaySelector();
-        setUpUserAlreadyHaveAccount();
         invalidateEditText();
 
         progressBar.setVisibility(View.GONE);
@@ -198,31 +199,6 @@ public class AdminAddEmployee extends AppCompatActivity {
             }
         });
 
-        positionACT.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String position = s.toString();
-
-                if (position.isEmpty()){
-                    positionTIL.setError("Enter position");
-                    noError = false;
-                }
-                else {
-                    positionTIL.setErrorEnabled(false);
-                    noError = true;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         birthdayET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -436,47 +412,50 @@ public class AdminAddEmployee extends AppCompatActivity {
                                 addBtn.setVisibility(View.VISIBLE);
                                 employeeNumTIL.setError("Already Exist");
                             }
+                            else if (position.length() == 0){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                positionTIL.setError("Select Position");
+                                Log.d("TAG", "Position is empty");
+                                positionACT.requestFocus();
+                            }
+                            else if (birthDate.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                birthdayTIL.setError("Select Birthdate");
+                            }
+                            else if (email.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                emailTIL.setError("Enter Email");
+                            }
+                            else if (password.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                passwordTIL.setError("Enter Password");
+                            }
+                            else if (confirmPassword.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                confirmPasswordTIL.setError("Enter Email");
+                            }
+                            else if (!password.equals(confirmPassword) && !confirmPassword.equals(password)){
+                                progressBar.setVisibility(View.GONE);
+                                addBtn.setVisibility(View.VISIBLE);
+                                passwordTIL.setError("Password not match");
+                                confirmPasswordTIL.setError("Password not match");
+                            }
+                            else{
+                                progressBar.setVisibility(View.VISIBLE);
+                                addBtn.setVisibility(View.GONE);
+
+                                registerUser(fullName, employeeNum, position, birthDate, email, confirmPassword, phoneNumber);
+                            }
                         }
                     });
 
                 }
-                else if (position.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    positionTIL.setError("Select Position");
-                }
-                else if (birthDate.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    birthdayTIL.setError("Select Birthdate");
-                }
-                else if (email.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    emailTIL.setError("Enter Email");
-                }
-                else if (password.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    passwordTIL.setError("Enter Password");
-                }
-                else if (confirmPassword.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    confirmPasswordTIL.setError("Enter Email");
-                }
-                else if (!password.equals(confirmPassword) && !confirmPassword.equals(password)){
-                    progressBar.setVisibility(View.GONE);
-                    addBtn.setVisibility(View.VISIBLE);
-                    passwordTIL.setError("Password not match");
-                    confirmPasswordTIL.setError("Password not match");
-                }
-                else{
-                    progressBar.setVisibility(View.VISIBLE);
-                    addBtn.setVisibility(View.GONE);
 
-                    registerUser(fullName, employeeNum, position, birthDate, email, confirmPassword, phoneNumber);
-                }
             }
             else{
                 Toast.makeText(getApplicationContext(), "Fill the empty fields", Toast.LENGTH_LONG).show();
@@ -490,6 +469,63 @@ public class AdminAddEmployee extends AppCompatActivity {
         });
     }
 
+    public interface QRCodeGenerationCallback {
+        void onQRCodeGenerated(String qrCodeImageURL);
+    }
+
+    private void generateEmployeeQRCode(String employeeNum, EmployeeSignup.QRCodeGenerationCallback callback) {
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(employeeNum, BarcodeFormat.QR_CODE, 600,  600);
+            BarcodeEncoder encoder = new BarcodeEncoder();
+            Bitmap bitmap = encoder.createBitmap(bitMatrix);
+
+            Bitmap qrCodeBitmap = loadAndOverlayPngImage(bitmap);
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            qrCodeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            byte[] imageData = bytes.toByteArray();
+
+            //Upload QRCODE Image to Firebase storage
+            StorageReference qrCodeStorageRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
+
+            qrCodeStorageRef.putBytes(imageData)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // existing code...
+
+                            StorageReference qrCodeImageURLRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
+
+                            qrCodeImageURLRef.getDownloadUrl()
+                                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            if (task.isSuccessful()) {
+                                                String qrCodeImageURL = task.getResult().toString();
+                                                callback.onQRCodeGenerated(qrCodeImageURL);
+                                            } else {
+                                                Log.d("TAG", "Failed to get URL");
+                                            }
+                                        }
+                                    });
+
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("TAG", "QR CODE FAILED TO UPLOAD TO FIREBASE");
+                        }
+                    });
+
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 
     private void registerUser(String fullName, String employeeNum, String position,
@@ -500,8 +536,13 @@ public class AdminAddEmployee extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        generateEmployeeQRCode(employeeNum);
-                        saveUserDetails(fullName, employeeNum, position, birthDate, email, phoneNumber);
+                        generateEmployeeQRCode(employeeNum, new EmployeeSignup.QRCodeGenerationCallback() {
+                            @Override
+                            public void onQRCodeGenerated(String qrCodeImageURL) {
+                                saveUserDetails(fullName, employeeNum, position, birthDate, email, phoneNumber, qrCodeImageURL);
+                            }
+                        });
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -514,7 +555,7 @@ public class AdminAddEmployee extends AppCompatActivity {
                 });
     }
 
-    private void saveUserDetails(String fullName, String employeeNum, String position, String birthDate, String email,String phoneNumber) {
+    private void saveUserDetails(String fullName, String employeeNum, String position, String birthDate, String email,String phoneNumber, String qrCodeImageURL) {
 
         HashMap<String, Object> employeeDetails = new HashMap<>();
 
@@ -524,6 +565,7 @@ public class AdminAddEmployee extends AppCompatActivity {
         employeeDetails.put("birthDate", birthDate);
         employeeDetails.put("email", email);
         employeeDetails.put("phoneNumber", phoneNumber);
+        employeeDetails.put("qrCodeImageURL", qrCodeImageURL);
 
     
 
@@ -537,7 +579,7 @@ public class AdminAddEmployee extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     Toast.makeText(getApplicationContext(), "Successfully Register", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(getApplicationContext(), EmployeeDashboard.class));
+                                    startActivity(new Intent(getApplicationContext(), AdminListOfEmployees.class));
                                 }
                             }, 3000);
                         }
@@ -595,45 +637,9 @@ public class AdminAddEmployee extends AppCompatActivity {
         return  mergedBitmap;
     }
 
-    private void generateEmployeeQRCode(String employeeNum) {
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(employeeNum, BarcodeFormat.QR_CODE, 600,  600);
-            BarcodeEncoder encoder = new BarcodeEncoder();
-            Bitmap bitmap = encoder.createBitmap(bitMatrix);
 
-            Bitmap qrCodeBitmap = loadAndOverlayPngImage(bitmap);
 
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            qrCodeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            byte[] imageData = bytes.toByteArray();
 
-            //Upload QRCODE Image to Firebase storage
-            StorageReference qrCodeStorageRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
-
-            qrCodeStorageRef.putBytes(imageData)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d("TAG", "QR CODE UPLOADED TO FIREBASE");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("TAG", "QR CODE FAILED TO UPLOAD TO FIREBASE");
-                        }
-                    });
-
-        } catch (WriterException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void setUpUserAlreadyHaveAccount() {
-        alreadyHaveAccBtn.setOnClickListener(v->{
-            startActivity(new Intent(getApplicationContext(), EmployeeLogin.class));
-        });
-    }
 
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
@@ -734,7 +740,7 @@ public class AdminAddEmployee extends AppCompatActivity {
     }
 
     private void setPositionSelector() {
-        itemAdapter = new ArrayAdapter<>(this, R.layout.position_list_item, items);
+        itemAdapter = new ArrayAdapter<>(AdminAddEmployee.this, R.layout.position_list_item, items);
         positionACT.setAdapter(itemAdapter);
 
         positionACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -768,7 +774,7 @@ public class AdminAddEmployee extends AppCompatActivity {
 
         addBtn = findViewById(R.id.add_Button);
 
-        alreadyHaveAccBtn = findViewById(R.id.alreadyHaveAccount_Textview);
+
 
         progressBar = findViewById(R.id.progressbar);
 
@@ -778,5 +784,11 @@ public class AdminAddEmployee extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AdminLogin.class));
+        super.onBackPressed();
     }
 }

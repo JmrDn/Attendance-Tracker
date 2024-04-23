@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:orientation="vertical"
+    tools:context=".Admin.AdminEmployeePayrollEdit">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primaryColor"
+            android:id="@+id/toolbar">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Payroll"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            app:cardElevation="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fullName_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fullname: Loading..."
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/employeeNumAndPosition_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID &amp; Position: Loading..."
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    tools:ignore="HardcodedText"
+                    android:layout_marginBottom="20dp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            app:cardElevation="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Period and Cutoff"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="15sp"
+                    android:textColor="@color/primaryColor"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    tools:ignore="HardcodedText" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@color/black"
+                    android:layout_marginEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/period_Textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/poppinsmedium"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@color/white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salary Info"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/basicSalary_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Basic Salary"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/basicSalary_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/allowance_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Allowance"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/allowance_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/totalSalary_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Total Salary"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/totalSalary_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/overTime_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Overtime"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/overTime_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/grossSalary_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Gross Salary"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/grossSalary_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardElevation="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Employee Contribution"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sss_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="SSS"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/sss_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/philHealth_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="PhilHealth"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/philHealth_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pagibigFund_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Pagibig Fund"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pagibigFund_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/withHoldingTax_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="With Holding Tax"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/withHoldingTax_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other Deduction"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="15sp"
+                    android:textColor="@color/primaryColor"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    tools:ignore="HardcodedText" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/late_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Late/Undertime"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/late_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/cashAdvance_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Cash Advance"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/cashAdvance_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/rental_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Rental"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/rental_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/totalDeduction_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Total Deduction"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/totalDeduction_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0.00"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/netSalary_TextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="Net Salary"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:endIconMode="clear_text"
+                    app:boxStrokeColor="@color/primaryColor"
+                    app:boxStrokeErrorColor="#FF0000"
+                    app:counterTextColor="@color/primaryColor"
+                    app:hintTextColor="@color/primaryColor"
+                    app:errorEnabled="true"
+                    tools:ignore="HardcodedText,MissingConstraints">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/netSalary_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0.00"
+                        android:drawablePadding="10dp"
+                        android:inputType="number"
+                        android:maxLength="100"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/reset_Button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Reset"
+                        android:layout_marginStart="20dp"
+                        android:fontFamily="@font/poppinsbold"
+                        android:textSize="18sp"
+                        android:background="@color/red"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:padding="15dp"
+                        tools:ignore="HardcodedText" />
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/save_Button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Save and Update"
+                        android:fontFamily="@font/poppinsbold"
+                        android:textSize="18sp"
+                        android:background="@color/primaryColor"
+                        android:textColor="@color/white"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:textAllCaps="false"
+                        android:padding="15dp"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+
+</ScrollView>

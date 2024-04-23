@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/primary_border"
+>
+
+    <ImageView
+        android:id="@+id/cancel_ImageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/baseline_cancel_24"
+        app:tint="@color/red"
+        android:clickable="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        tools:ignore="KeyboardInaccessibleWidget" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_employee"
+                app:tint="@color/primaryColor"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full name"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/name_Textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jomari Danao"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_position"
+                app:tint="@color/primaryColor"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Position"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/position_Textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Labor"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/timeIn_Button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Arrival"
+            android:fontFamily="@font/poppinsbold"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:padding="15dp"
+
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/timeOut_Button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Departure"
+            android:fontFamily="@font/poppinsbold"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:padding="15dp"
+
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="HardcodedText"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

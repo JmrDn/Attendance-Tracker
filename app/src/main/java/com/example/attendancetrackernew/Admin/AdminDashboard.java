@@ -1,23 +1,50 @@
 package com.example.attendancetrackernew.Admin;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendancetrackernew.CaptureAct;
 import com.example.attendancetrackernew.Employee.EmployeeDashboard;
 import com.example.attendancetrackernew.Employee.EmployeeSharedPreferences;
 import com.example.attendancetrackernew.R;
 import com.example.attendancetrackernew.SelectRole;
+import com.example.attendancetrackernew.Utils.DateAndTimeUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AdminDashboard extends AppCompatActivity {
     CardView attendanceBtn,
             scanBtn,
@@ -27,6 +54,7 @@ public class AdminDashboard extends AppCompatActivity {
             logoutBtn;
     AdminSharedPreferences adminDetails;
     TextView adminName;
+    Dialog scanResultDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +77,17 @@ public class AdminDashboard extends AppCompatActivity {
         attendanceBtn.setOnClickListener(v->{
 
         });
-        listOfEmployeeBtn.setOnClickListener(v1->{
-            startActivity(new Intent(getApplicationContext(), AdminListOfEmployees.class));
-        });
+        listOfEmployeeBtn.setOnClickListener(v1->{startActivity(new Intent(getApplicationContext(), AdminListOfEmployees.class));});
 
-        logoutBtn.setOnClickListener(v->{
-            showLogoutDialog();
-        });
+        logoutBtn.setOnClickListener(v->{showLogoutDialog();});
+
+        scanBtn.setOnClickListener(v->{scanCode();});
+
+        attendanceBtn.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminAttendance.class));});
+
+        employeePayRollBtn.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminEmployeePayroll.class));});
+
+        reportsBtn.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminReports.class));});
     }
 
     private void showLogoutDialog() {
@@ -83,6 +115,16 @@ public class AdminDashboard extends AppCompatActivity {
         });
     }
 
+    private void scanCode() {
+
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up for flash down for off");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
+    }
+
     private void initWidgets() {
         attendanceBtn = findViewById(R.id.attendanceSummary_CardView);
         scanBtn = findViewById(R.id.scan_CardView);
@@ -94,5 +136,587 @@ public class AdminDashboard extends AppCompatActivity {
         adminName = findViewById(R.id.adminName_Textview);
     }
 
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
 
+            //Get value of qrcode
+            String itemChild = result.getContents();
+            showResultDialog(itemChild);
+//            setScannedHistory(itemChild);
+
+        }
+    });
+
+    private void showResultDialog(String itemChild) {
+        Toast.makeText(AdminDashboard.this, itemChild, Toast.LENGTH_SHORT).show();
+        scanResultDialog = new Dialog(this);
+        scanResultDialog.setContentView(R.layout.scan_result_dialog);
+        scanResultDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        scanResultDialog.setCancelable(false);
+        scanResultDialog.show();
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the format pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+
+        // Format the date and time
+        String dateId = currentDateTime.format(formatter);
+
+        String year = DateAndTimeUtils.getYear(dateId);
+        String month = DateAndTimeUtils.getMonth(dateId);
+        String currentTimeWithAmAndPM = DateAndTimeUtils.getTimeWithAMAndPM();
+
+        TextView nameTV, positionTV;
+
+        AppCompatButton timeInBtn, timeOutBtn;
+        ImageView cancelBtn;
+
+
+        nameTV = scanResultDialog.findViewById(R.id.name_Textview);
+        positionTV = scanResultDialog.findViewById(R.id.position_Textview);
+
+        timeInBtn = scanResultDialog.findViewById(R.id.timeIn_Button);
+        timeOutBtn = scanResultDialog.findViewById(R.id.timeOut_Button);
+        cancelBtn = scanResultDialog.findViewById(R.id.cancel_ImageView);
+
+        HashMap<String , Object> employeeDetailsTimeIn = new HashMap<>();
+        employeeDetailsTimeIn.put("employeeNumber", itemChild);
+        employeeDetailsTimeIn.put("timeIn", currentTimeWithAmAndPM);
+        employeeDetailsTimeIn.put("timeOut", "");
+        employeeDetailsTimeIn.put("dateId", dateId);
+
+        if (!itemChild.contains(".") &&
+                !itemChild.contains("#") &&
+                !itemChild.contains("$") &&
+                !itemChild.contains("[") &&
+                !itemChild.contains("]")){
+
+            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                if (documentSnapshot.exists()){
+                                    String fullName = documentSnapshot.getString("fullName");
+                                    String position = documentSnapshot.getString("position");
+                                    nameTV.setText(fullName);
+                                    positionTV.setText(position);
+                                    employeeDetailsTimeIn.put("fullName", fullName);
+                                    employeeDetailsTimeIn.put("position", position);
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(), "No data found", Toast.LENGTH_LONG).show();
+                                    scanResultDialog.dismiss();
+                                }
+                            }
+                        }
+                    });
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No data found", Toast.LENGTH_LONG).show();
+            scanResultDialog.dismiss();
+        }
+
+        isEmployeeAlreadyTimeIn(itemChild, new EmployeeAlreadyTimeIn() {
+            @Override
+            public void onCallBack(boolean isEmployeeAlreadyTimeIn, String timeIn) {
+                if (isEmployeeAlreadyTimeIn){
+                    // Employee already time in
+                    timeInBtn.setEnabled(false);
+                    timeInBtn.setBackgroundColor(Color.LTGRAY);
+
+                    timeOutBtn.setEnabled(true);
+                    timeOutBtn.setBackgroundColor(Color.RED);
+
+                    isEmployeeAlreadyTimeOut(itemChild, new EmployeeAlreadyTimeOut() {
+                        @Override
+                        public void onCallBack(boolean isEmployeeAlreadyTimeOut, String timeOut) {
+                            if (isEmployeeAlreadyTimeOut){
+                                // Employee already time out
+
+                                timeOutBtn.setEnabled(false);
+                                timeOutBtn.setBackgroundColor(Color.LTGRAY);
+
+                                if (isEmployeeAlreadyTimeOut && isEmployeeAlreadyTimeIn){
+                                    if (timeOut.equals(dateId)){
+                                        timeOutBtn.setEnabled(false);
+                                        timeOutBtn.setBackgroundColor(Color.LTGRAY);
+
+                                        timeInBtn.setEnabled(false);
+                                        timeInBtn.setBackgroundColor(Color.LTGRAY);
+                                    }
+                                    else{
+                                        timeOutBtn.setEnabled(true);
+                                        timeOutBtn.setBackgroundColor(Color.RED);
+
+                                        timeInBtn.setEnabled(true);
+                                        timeInBtn.setBackgroundColor(ContextCompat.getColor(AdminDashboard.this, R.color.primaryColor));
+                                    }
+                                }
+                            }
+                            else{
+                                //Employee not yet time out
+
+                                timeOutBtn.setEnabled(true);
+                                timeOutBtn.setBackgroundColor(Color.RED);
+                            }
+                        }
+                    });
+                }
+                else{
+                    //Employee not yet time in
+                    timeInBtn.setEnabled(true);
+                    timeInBtn.setBackgroundColor(ContextCompat.getColor(AdminDashboard.this, R.color.primaryColor));
+
+                    timeOutBtn.setEnabled(false);
+                    timeOutBtn.setBackgroundColor(Color.LTGRAY);
+                }
+            }
+        });
+
+
+        cancelBtn.setOnClickListener(v->{
+            scanResultDialog.dismiss();
+        });
+        timeInBtn.setOnClickListener(v->{
+            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                    .collection("attendance_year" + year).document(month+year)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                if (!documentSnapshot.exists()){
+                                    HashMap<String , Object> monthDetails = new HashMap<>();
+                                    monthDetails.put("monthId", month+year);
+
+                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                            .collection("attendance_year" + year).document(month+year)
+                                            .update(monthDetails)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+                                }
+                            }
+                        }
+                    });
+
+            FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                if (!documentSnapshot.exists()){
+                                    HashMap<String , Object> monthDetails = new HashMap<>();
+                                    monthDetails.put("monthId", month+year);
+
+                                    FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                                            .update(monthDetails)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+                                }
+                            }
+                        }
+                    });
+            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                    .collection("attendance_year" + year).document(month+year)
+                    .collection(dateId)
+                    .document(itemChild)
+                    .set(employeeDetailsTimeIn)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+
+            FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                    .collection(dateId)
+                    .document(itemChild)
+                    .set(employeeDetailsTimeIn)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(AdminDashboard.this,
+                                    "Employee " + nameTV.getText().toString() + " time in " + currentTimeWithAmAndPM
+                                    ,Toast.LENGTH_LONG).show();
+                            scanResultDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AdminDashboard.this, "Failed to in: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            scanResultDialog.dismiss();
+                        }
+                    });
+        });
+
+
+        timeOutBtn.setOnClickListener(v->{
+
+            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                    .collection("attendance_year" + year).document(month+year)
+                    .collection(dateId)
+                    .document(itemChild)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                if (documentSnapshot.exists()){
+                                    String timeIn = documentSnapshot.getString("timeIn");
+                                    String timeOut = currentTimeWithAmAndPM;
+
+                                    String timeInSchedule = "08:00"; //8AM
+                                    String timeOutSchedule = "17:00"; //5PM
+
+                                    String formattedTimeIn = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeIn);
+                                    String formattedTimeOut = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeOut);
+
+                                    String late = DateAndTimeUtils.getMinutes(timeInSchedule, formattedTimeIn);
+                                    String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
+                                    String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
+                                    HashMap<String , Object>  employeeDetailsTimeOut = new HashMap<>();
+
+                                    employeeDetailsTimeOut.put("timeOut", currentTimeWithAmAndPM);
+                                    employeeDetailsTimeOut.put("late", late);
+                                    employeeDetailsTimeOut.put("leaveEarly", leaveEarly);
+                                    employeeDetailsTimeOut.put("overTime", overTime);
+
+                                    FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                                            .collection(dateId)
+                                            .document(itemChild)
+                                            .update(employeeDetailsTimeOut)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(AdminDashboard.this,
+                                                            "Employee " + nameTV.getText().toString() + " time out " + currentTimeWithAmAndPM
+                                                            ,Toast.LENGTH_LONG).show();
+                                                    scanResultDialog.dismiss();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(AdminDashboard.this, "Failed to time out: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                    scanResultDialog.dismiss();
+                                                }
+                                            });
+
+                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                            .collection("attendance_year" + year).document(month+year)
+                                            .collection(dateId)
+                                            .document(itemChild)
+                                            .update(employeeDetailsTimeOut)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+
+                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                            .collection("attendance_year" + year).document(month+year)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()){
+                                                        DocumentSnapshot documentSnapshot1 = task.getResult();
+
+                                                        if (documentSnapshot1.exists()){
+                                                            HashMap<String, Object> presentDayHM = new HashMap<>();
+                                                            if(documentSnapshot1.contains("presentDays")){
+                                                                String presentDay = documentSnapshot1.getString("presentDays");
+                                                                int presentDayInt = Integer.parseInt(presentDay) + 1;
+                                                                presentDayHM.put("presentDays", String.valueOf(presentDayInt));
+
+                                                            }
+                                                            else{
+                                                                presentDayHM.put("presentDay", "1");
+                                                            }
+
+                                                            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                                                    .collection("attendance_year" + year).document(month+year)
+                                                                    .update(presentDayHM)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                Log.d("TAG", "Present day updated");
+                                                                            }
+                                                                            else{
+                                                                                Log.d("TAG", "Failed to update Present day");
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+
+
+
+
+                                }
+                            }
+                        }
+                    });
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    calculateTotalLateLeaveEarlyAndOverTime(itemChild, month, year, dateId);
+                }
+            },5000);
+
+
+
+        });
+
+    }
+
+    private void calculateTotalLateLeaveEarlyAndOverTime(String itemChild, String documentId, String year, String dateId) {
+        int totalLate = 0;
+        int totalLeaveEarly = 0;
+        int totalOverTime = 0;
+        int[] totalValue = {totalLate, totalLeaveEarly, totalOverTime};
+
+
+
+        for (int i = 1; i <= 12; i++){
+            String month = "";
+            String iString = String.valueOf(i);
+
+
+            if (iString.equals("1") ||
+                    iString.equals("2") ||
+                    iString.equals("3") ||
+                    iString.equals("4") ||
+                    iString.equals("5") ||
+                    iString.equals("6") ||
+                    iString.equals("7") ||
+                    iString.equals("8") ||
+                    iString.equals("9")){
+
+                month = "0" + iString;
+            }
+            else {
+                month = iString;
+            }
+
+            for (int j = 1; j <= 31; j++){
+                String day = "";
+                String jString = String.valueOf(j);
+
+                if (jString.equals("1") ||
+                        jString.equals("2") ||
+                        jString.equals("3") ||
+                        jString.equals("4") ||
+                        jString.equals("5") ||
+                        jString.equals("6") ||
+                        jString.equals("7") ||
+                        jString.equals("8") ||
+                        jString.equals("9")){
+
+                    day = "0" +  jString;
+                }
+                else {
+                    day =  jString;
+                }
+
+                String collectionName = day + month + year;
+//                Log.d("TAG", collectionName);
+
+                FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                        .collection("attendance_year"+ year).document(documentId+year)
+                        .collection(collectionName)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    QuerySnapshot querySnapshot = task.getResult();
+
+                                    if (!querySnapshot.isEmpty() && querySnapshot != null){
+                                        for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                            totalValue[0] += Integer.parseInt(documentSnapshot.getString("late"));
+                                            totalValue[1] += Integer.parseInt(documentSnapshot.getString("leaveEarly"));
+                                            totalValue[2] += Integer.parseInt(documentSnapshot.getString("overTime"));
+
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+
+            }
+        }
+
+
+      new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+              HashMap<String , Object> totalValueDetails = new HashMap<>();
+              totalValueDetails.put("late", String.valueOf(totalValue[0]));
+              totalValueDetails.put("leaveEarly", String.valueOf(totalValue[1]));
+              totalValueDetails.put("overTime", String.valueOf(totalValue[2]));
+              totalValueDetails.put("monthId", documentId+year);
+
+              FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                      .collection("attendance_year"+ year).document(documentId+year)
+                      .set(totalValueDetails)
+                      .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                              Log.d("TAG", "Success uploading total details");
+                          }
+                      }).addOnFailureListener(new OnFailureListener() {
+                          @Override
+                          public void onFailure(@NonNull Exception e) {
+                              Log.d("TAG", "Failed to upload total details");
+                          }
+                      });
+          }
+      },10000);
+    }
+
+    public interface EmployeeAlreadyTimeIn{
+        void onCallBack(boolean isEmployeeAlreadyTimeIn, String dateTimeIn);
+    }
+    public interface EmployeeAlreadyTimeOut{
+        void onCallBack(boolean isEmployeeAlreadyTimeOut, String dateTimeOut);
+    }
+    private void isEmployeeAlreadyTimeOut(String employeeNumber, EmployeeAlreadyTimeOut callback){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the format pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+
+        // Format the date and time
+        String dateId = currentDateTime.format(formatter);
+
+        String year = DateAndTimeUtils.getYear(dateId);
+        String month = DateAndTimeUtils.getMonth(dateId);
+
+        FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                .collection(dateId)
+                .document(employeeNumber)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()){
+                                if (documentSnapshot.contains("timeOut")){
+                                    String date = documentSnapshot.getString("dateId");
+                                    String timeOut = documentSnapshot.getString("timeOut");
+                                    if (timeOut.equals(""))
+                                        callback.onCallBack(false, "");
+                                    else
+                                        callback.onCallBack(true, date);
+                                }
+                                else{
+                                    callback.onCallBack(false,"");
+                                }
+                            }
+                            else{
+                                callback.onCallBack(false,"");
+                            }
+                        }
+                    }
+                });
+
+    }
+
+    private void isEmployeeAlreadyTimeIn(String employeeNumber, EmployeeAlreadyTimeIn callback){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the format pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+
+        // Format the date and time
+        String dateId = currentDateTime.format(formatter);
+
+        String year = DateAndTimeUtils.getYear(dateId);
+        String month = DateAndTimeUtils.getMonth(dateId);
+
+        FirebaseFirestore.getInstance().collection("attendance_year" + year).document(month+year)
+                .collection(dateId)
+                .document(employeeNumber)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()){
+                                if (documentSnapshot.contains("timeIn")){
+                                    String date = documentSnapshot.getString("dateId");
+                                    String timeIn = documentSnapshot.getString("timeIn");
+                                    if (timeIn.isEmpty() && timeIn == null)
+                                        callback.onCallBack(false, "");
+                                    else
+                                        callback.onCallBack(true, date);
+                                }
+                                else{
+                                    callback.onCallBack(false, "");
+                                }
+                            }
+                            else{
+                                callback.onCallBack(false, "");
+                            }
+                        }
+                    }
+                });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }
+

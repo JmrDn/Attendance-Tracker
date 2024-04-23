@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Employee.EmployeePayslip"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/period_toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="My Payslip"
+                android:fontFamily="@font/poppinsbold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarSize="0dp"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="right"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewEmployeeInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/white"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textViewFullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Fullname: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewFullnameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Loading..."
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewFullname"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewPosition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="ID &amp; Position"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewFullname"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewIDValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewPosition"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewFullnameValue" />
+
+                    <TextView
+                        android:id="@+id/textViewPositionValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/textViewIDValue"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewFullnameValue" />
+
+                    <TextView
+                        android:id="@+id/period_Textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Period: Loading..."
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewPosition"
+                        tools:ignore="HardcodedText,MissingConstraints" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewSalary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/white"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textViewSalary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Salary"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/green"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <View
+                        android:id="@+id/salaryLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewSalary" />
+
+                    <TextView
+                        android:id="@+id/textViewBasicSalary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Basic Salary"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/salaryLine"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewBasicSalaryValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewSalary"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewAllowance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Allowance"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewBasicSalary"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewAllowanceValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewBasicSalaryValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewOvertime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Overtime"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewAllowance"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewOvertimeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewAllowanceValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewGrossSalary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Gross Salary"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewOvertime"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewGrossSalaryValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewOvertimeValue"
+                        tools:ignore="HardcodedText" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewDeduction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/white"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewSalary">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textViewDeduction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Deduction"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/green"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <View
+                        android:id="@+id/lineDeduction"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewDeduction" />
+
+                    <TextView
+                        android:id="@+id/textViewSSS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="SSS"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lineDeduction"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewSSSValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lineDeduction"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewPhilHealth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="PhilHealth"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewSSS"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewPhilHealthValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewSSSValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewPagIbigFund"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Pagibig Fund"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewPhilHealth"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewPagIbigFundValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewPhilHealthValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewWitholdingTax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="WithHolding Tax"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewPagIbigFundValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewWitholdingTaxValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewPagIbigFundValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewLate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Late/Undertime"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewWitholdingTax"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewLateValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewWitholdingTaxValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewCashAdvance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Cash Advance"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewLate"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewCashAdvanceValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewLateValue"
+                        tools:ignore="HardcodedText" />
+
+
+                    <TextView
+                        android:id="@+id/textViewRental"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Rental"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewCashAdvance"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewRentalValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewCashAdvanceValue"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewTotalDeduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Total Deduction"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewRental"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewTotalDeductionValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewRentalValue"
+                        tools:ignore="HardcodedText" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewNetSalary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/white"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textViewNetSalary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="Net Salary"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/textViewNetSalaryValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                    <View
+                        android:id="@+id/netSalaryLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNetSalary" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/white"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <LinearLayout
+                        android:id="@+id/exportButton"
+                        android:layout_width="160dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/primary_button_with_radius"
+                        android:clickable="true"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:ignore="KeyboardInaccessibleWidget">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/shareImageView"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="18dp"
+                                android:src="@drawable/ic_download"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/poppinsmedium"
+                                android:gravity="center"
+                                android:text="Export Payroll"
+                                android:textColor="@color/white"
+                                android:textSize="13sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/shareImageView"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="HardcodedText" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

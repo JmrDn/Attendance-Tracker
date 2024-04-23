@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/employeeID_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="2020-2020"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/employeeName_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Micah"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/presentDays_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="15"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/late_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="24"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/leaveEarly_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="24"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/overtime_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="20"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

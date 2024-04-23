@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="5dp"
+    android:layout_marginTop="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fullName_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fullname: Jomari Danao"
+            android:fontFamily="@font/poppinsmedium"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/employeeNumAndPosition_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I.D. &amp; Position : 2020-2020 | Labor"
+            android:fontFamily="@font/poppinsmedium"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            tools:ignore="HardcodedText" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/primaryColor"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:id="@+id/progressbar"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/recyclerview"/>
+        </RelativeLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                 android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/primary_black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Late"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="Minutes"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:id="@+id/late_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/primary_black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Leave Early"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="Minutes"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:id="@+id/leaveEarly_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/primary_black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Overtime"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="Minutes"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_stroke_no_radius">
+
+                        <TextView
+                            android:id="@+id/overtime_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

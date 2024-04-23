@@ -61,7 +61,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EmployeeSignup extends AppCompatActivity {
-    String  qrCodeImageURL = "";
+    public static String  qrCodeImageURL = "";
     String [] items = {"Office Staff", "Draftsman", "Engineer", "Labor"};
     ArrayAdapter<String> itemAdapter;
     AutoCompleteTextView positionACT;
@@ -443,47 +443,48 @@ public class EmployeeSignup extends AppCompatActivity {
                                 registerBtn.setVisibility(View.VISIBLE);
                                 employeeNumTIL.setError("Already Exist");
                             }
+                            else if (position.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                positionTIL.setError("Select Position");
+                            }
+                            else if (birthDate.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                birthdayTIL.setError("Select Birthdate");
+                            }
+                            else if (email.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                emailTIL.setError("Enter Email");
+                            }
+                            else if (password.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                passwordTIL.setError("Enter Password");
+                            }
+                            else if (confirmPassword.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                confirmPasswordTIL.setError("Enter Email");
+                            }
+                            else if (!password.equals(confirmPassword) && !confirmPassword.equals(password)){
+                                progressBar.setVisibility(View.GONE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                passwordTIL.setError("Password not match");
+                                confirmPasswordTIL.setError("Password not match");
+                            }
+                            else{
+                                progressBar.setVisibility(View.VISIBLE);
+                                registerBtn.setVisibility(View.GONE);
+
+                                registerUser(fullName, employeeNum, position, birthDate, email, confirmPassword, phoneNumber);
+                            }
                         }
                     });
 
                 }
-                else if (position.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    positionTIL.setError("Select Position");
-                }
-                else if (birthDate.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    birthdayTIL.setError("Select Birthdate");
-                }
-                else if (email.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    emailTIL.setError("Enter Email");
-                }
-                else if (password.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    passwordTIL.setError("Enter Password");
-                }
-                else if (confirmPassword.isEmpty()){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    confirmPasswordTIL.setError("Enter Email");
-                }
-                else if (!password.equals(confirmPassword) && !confirmPassword.equals(password)){
-                    progressBar.setVisibility(View.GONE);
-                    registerBtn.setVisibility(View.VISIBLE);
-                    passwordTIL.setError("Password not match");
-                    confirmPasswordTIL.setError("Password not match");
-                }
-                else{
-                    progressBar.setVisibility(View.VISIBLE);
-                    registerBtn.setVisibility(View.GONE);
 
-                    registerUser(fullName, employeeNum, position, birthDate, email, confirmPassword, phoneNumber);
-                }
             }
             else{
                 Toast.makeText(getApplicationContext(), "Fill the empty fields", Toast.LENGTH_LONG).show();
@@ -507,8 +508,13 @@ public class EmployeeSignup extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        generateEmployeeQRCode(employeeNum);
-                        saveUserDetails(fullName, employeeNum, position, birthDate, email, phoneNumber);
+                        generateEmployeeQRCode(employeeNum, new QRCodeGenerationCallback() {
+                            @Override
+                            public void onQRCodeGenerated(String qrCodeImageURL) {
+                                saveUserDetails(fullName, employeeNum, position, birthDate, email, phoneNumber, qrCodeImageURL);
+                            }
+                        });
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -521,22 +527,8 @@ public class EmployeeSignup extends AppCompatActivity {
                 });
     }
 
-    private void saveUserDetails(String fullName, String employeeNum, String position, String birthDate, String email,String phoneNumber) {
+    private void saveUserDetails(String fullName, String employeeNum, String position, String birthDate, String email,String phoneNumber, String qrCodeImageURL) {
 
-        StorageReference qrCodeImageURLRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
-
-        qrCodeImageURLRef.getDownloadUrl()
-                .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()){
-                            qrCodeImageURL = task.getResult().toString();
-                        }
-                        else{
-                            Log.d("TAG", "Failed to get URL");
-                        }
-                    }
-                });
         HashMap<String, Object> employeeDetails = new HashMap<>();
 
         employeeDetails.put("fullName", fullName);
@@ -623,8 +615,12 @@ public class EmployeeSignup extends AppCompatActivity {
 
         return  mergedBitmap;
     }
+    public interface QRCodeGenerationCallback {
+        void onQRCodeGenerated(String qrCodeImageURL);
+    }
 
-    private void generateEmployeeQRCode(String employeeNum) {
+    private void generateEmployeeQRCode(String employeeNum, QRCodeGenerationCallback callback) {
+
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(employeeNum, BarcodeFormat.QR_CODE, 600,  600);
@@ -644,7 +640,22 @@ public class EmployeeSignup extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d("TAG", "QR CODE UPLOADED TO FIREBASE");
+                            // existing code...
+
+                            StorageReference qrCodeImageURLRef = FirebaseStorage.getInstance().getReference("images/employeesQRCODE/" + employeeNum);
+
+                            qrCodeImageURLRef.getDownloadUrl()
+                                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            if (task.isSuccessful()) {
+                                                qrCodeImageURL = task.getResult().toString();
+                                                callback.onQRCodeGenerated(qrCodeImageURL);
+                                            } else {
+                                                Log.d("TAG", "Failed to get URL");
+                                            }
+                                        }
+                                    });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -656,6 +667,7 @@ public class EmployeeSignup extends AppCompatActivity {
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private void setUpUserAlreadyHaveAccount() {

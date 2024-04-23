@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/primary_black_stroke_no_radius">
+
+        <TextView
+            android:id="@+id/date_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Feb 20, 2024"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_stroke_no_radius"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IN"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_stroke_no_radius"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OUT"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_stroke_no_radius"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/timeIn_Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="8:00 AM"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_stroke_no_radius"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/timeOut_Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="4:00 PM"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

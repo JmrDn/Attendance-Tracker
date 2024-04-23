@@ -1,10 +1,12 @@
 package com.example.attendancetrackernew.Admin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class AdminLogin extends AppCompatActivity {
     TextInputEditText emailET;
     TextInputEditText passwordET;
@@ -155,6 +157,7 @@ public class AdminLogin extends AppCompatActivity {
         createAccBtn = findViewById(R.id.createNewAcc_Textview);
     }
 
+
     @Override
     protected void onStart() {
 
@@ -162,5 +165,10 @@ public class AdminLogin extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
         }
         super.onStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

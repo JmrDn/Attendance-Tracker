@@ -1,6 +1,7 @@
 package com.example.attendancetrackernew.Employee;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -14,7 +15,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,8 +34,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.attendancetrackernew.R;
 import com.example.attendancetrackernew.SelectRole;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +48,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 @SuppressLint("DefaultLocale")
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EmployeeDashboard extends AppCompatActivity {
     TextView fullNameTV;
     TextView emailTV;
@@ -104,6 +110,8 @@ public class EmployeeDashboard extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Image saved", Toast.LENGTH_SHORT).show();
 
             try {
+
+                Bitmap bitmap = ((BitmapDrawable) qrCodeImageview1.getDrawable()).getBitmap();
                 fileOutputStream = new FileOutputStream(outfile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
                 fileOutputStream.flush();
@@ -196,6 +204,7 @@ public class EmployeeDashboard extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
@@ -206,6 +215,10 @@ public class EmployeeDashboard extends AppCompatActivity {
         else if (itemId == R.id.updateProfile){
             startActivity(new Intent(getApplicationContext(), EmployeeUpdateProfile.class));
         }
+        else if (itemId == R.id.payslip){
+            startActivity(new Intent(getApplicationContext(), EmployeePayslip.class));
+        }
+
         return  true;
     }
 
@@ -231,5 +244,14 @@ public class EmployeeDashboard extends AppCompatActivity {
         cancelBtn.setOnClickListener(v1->{
             logoutDialog.dismiss();
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }

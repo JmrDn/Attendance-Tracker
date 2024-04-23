@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.ContactsContract;
@@ -37,6 +38,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.attendancetrackernew.Admin.AdminListOfEmployees;
 import com.example.attendancetrackernew.Admin.Model.ListOfEmployeeModel;
 import com.example.attendancetrackernew.Employee.EmployeeSharedPreferences;
 import com.example.attendancetrackernew.R;
@@ -141,6 +143,8 @@ public class ListOfEmployeeAdapter extends RecyclerView.Adapter<ListOfEmployeeAd
             Toast.makeText(context, "Image saved", Toast.LENGTH_SHORT).show();
 
             try {
+                Bitmap bitmap = ((BitmapDrawable) qrCodeImageview1.getDrawable()).getBitmap();
+
                 fileOutputStream = new FileOutputStream(outfile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
                 fileOutputStream.flush();
@@ -165,15 +169,15 @@ public class ListOfEmployeeAdapter extends RecyclerView.Adapter<ListOfEmployeeAd
         alertDialogBuilder.setTitle("Delete");
         alertDialogBuilder.setMessage("Are you sure you want to delete this? \nYou cannot undo this action.");
         alertDialogBuilder.setPositiveButton("Yes", (dialog, which) -> {
-            FirebaseFirestore.getInstance().collection("users").document(model.getEmployeeNum())
+            FirebaseFirestore.getInstance().collection("employees").document(model.getEmployeeNum())
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @SuppressLint("ResourceType")
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast toast = Toast.makeText(context, "Employee " + model.getFullName() + " deleted", Toast.LENGTH_SHORT);
-                            toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                            toast.show();
+                             Toast.makeText(context, "Employee " + model.getFullName() + " deleted", Toast.LENGTH_SHORT).show();
+                             context.startActivity(new Intent(context, AdminListOfEmployees.class));
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -309,9 +313,8 @@ public class ListOfEmployeeAdapter extends RecyclerView.Adapter<ListOfEmployeeAd
                 view6.getContext().startActivity(emailIntent);
             } else {
 
-                Toast toast = Toast.makeText(context,  "Unable to open Gmail app", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+                 Toast.makeText(context,  "Unable to open Gmail app", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -492,55 +495,49 @@ public class ListOfEmployeeAdapter extends RecyclerView.Adapter<ListOfEmployeeAd
 
             if (fullName.isEmpty() && employeeNumber.isEmpty() && employeePosition.isEmpty()
                     && phoneNumber.isEmpty() && birthday.isEmpty()) {
-                Toast toast = Toast.makeText(context, "All fields are required.", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+                Toast.makeText(context, "All fields are required.", Toast.LENGTH_SHORT).show();
+
             }
 
             if (fullName.length() > 50) {
                 fullNameEditText.requestFocus();
-                Toast toast = Toast.makeText(context, "Fullname should be less than or equal to 50 characters", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+                 Toast.makeText(context, "Fullname should be less than or equal to 50 characters", Toast.LENGTH_SHORT).show();
+
             } else if (!isValidEmployeeNumber(employeeNumber)) {
                 employeeNumberEditText.requestFocus();
-                Toast toast = Toast.makeText(context, "Please enter a valid Employee number", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+                Toast.makeText(context, "Please enter a valid Employee number", Toast.LENGTH_SHORT).show();
+
             } else if (!isValidPhilippinesPhoneNumber(phoneNumber)) {
                 phoneNumberEditText.requestFocus();
-                Toast toast = Toast.makeText(context, "Please enter a valid Phone number", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+               Toast.makeText(context, "Please enter a valid Phone number", Toast.LENGTH_SHORT).show();
+
             } else if (phoneNumber.length() != 11) {
                 phoneNumberEditText.requestFocus();
-                Toast toast = Toast.makeText(context, "Phone number should be equal to 11 digits", Toast.LENGTH_SHORT);
-                toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                toast.show();
+               Toast.makeText(context, "Phone number should be equal to 11 digits", Toast.LENGTH_SHORT).show();
+
             } else {
                 // All validation passed, proceed with updating the data
                 Map<String, Object> userMap = new HashMap<>();
-                userMap.put("fullname", fullName);
-                userMap.put("employee_number", employeeNumber);
-                userMap.put("employee_position", employeePosition);
-                userMap.put("phone_number", phoneNumber);
-                userMap.put("birthday", birthday);
+                userMap.put("fullName", fullName);
+                userMap.put("employeeNumber", employeeNumber);
+                userMap.put("position", employeePosition);
+                userMap.put("phoneNumber", phoneNumber);
+                userMap.put("birthDate", birthday);
 
-                FirebaseFirestore.getInstance().collection("users").document(employeeNumber)
+                FirebaseFirestore.getInstance().collection("employees").document(employeeNumber)
                         .update(userMap)
                         .addOnSuccessListener(aVoid -> {
-                            Toast toast = Toast.makeText(context, "Data Updated Successfully", Toast.LENGTH_SHORT);
-                            toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                            toast.show();
+                            Toast.makeText(context, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                            context.startActivity(new Intent(context, AdminListOfEmployees.class));
+
                             // Dismiss the dialogPlus using the class member variable
                             if (dialogPlus != null) {
                                 dialogPlus.dismiss();
                             }
                         })
                         .addOnFailureListener(e -> {
-                            Toast toast = Toast.makeText(context, "Error While Updating", Toast.LENGTH_SHORT);
-                            toast.getView().setBackgroundResource(R.style.BaseToastMessage);
-                            toast.show();
+                           Toast.makeText(context, "Error While Updating", Toast.LENGTH_SHORT).show();
+
                             // Dismiss the dialogPlus using the class member variable
                             if (dialogPlus != null) {
                                 dialogPlus.dismiss();
