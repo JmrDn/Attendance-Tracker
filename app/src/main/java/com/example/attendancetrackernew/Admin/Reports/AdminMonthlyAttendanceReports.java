@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,11 +64,13 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
     RelativeLayout noDataLayout;
     AppCompatButton exportBtn;
     LinearLayout titleColumnLayout;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_monthly_attendance_reports);
         initWidgets();
+        setUpToolbar();
         setUpMonthView();
         setUpMonthButton();
 
@@ -79,6 +82,13 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
             showDatePickerDialog();
         });
         setUpRecyclerview(dateId);
+    }
+
+    private void setUpToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeActionContentDescription("Back");
     }
 
     private void setUpMonthButton() {
@@ -104,7 +114,6 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
         monthYearTV.setText(CalendarUtils.monthYearFromDate(CalendarUtils.selectedDate));
         String dateId = DateAndTimeUtils.parseDateToDateId(CalendarUtils.selectedDate);
         setUpRecyclerview(dateId);
-
 
     }
 
@@ -320,9 +329,14 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
                                 String late = documentSnapshot.getString("late");
                                 String leaveEarly = documentSnapshot.getString("leaveEarly");
                                 String overTime = documentSnapshot.getString("overTime");
+                                String presentDays = "0";
+
+                                if(documentSnapshot.contains("presentDay")){
+                                    presentDays = documentSnapshot.getString("presentDay");
+                                }
                                 noDataLayout.setVisibility(View.GONE);
                                 titleColumnLayout.setVisibility(View.VISIBLE);
-                                list.add(new MonthlyReportsModel(employeeNum, fullName, String.valueOf(presentDays[0]), late, leaveEarly, overTime));
+                                list.add(new MonthlyReportsModel(employeeNum, fullName, presentDays, late, leaveEarly, overTime));
 
                             }
 
@@ -375,6 +389,8 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
 
         exportBtn = findViewById(R.id.exportAsExcel_Button);
         titleColumnLayout = findViewById(R.id.titleColumn_Layout);
+
+        toolbar = findViewById(R.id.toolbar);
     }
 
 

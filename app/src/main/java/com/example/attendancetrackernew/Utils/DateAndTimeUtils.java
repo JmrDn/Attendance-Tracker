@@ -175,6 +175,41 @@ public class DateAndTimeUtils {
         return  month;
     }
 
+    public static String getPreviousMonthDateId(String date) {
+        String monthId = date.substring(2, 4);
+        int monthIdInt = Integer.parseInt(monthId) - 1;
+
+        // Adjust monthIdInt to handle January (0) and format it to two digits
+        if (monthIdInt < 1) {
+            monthIdInt = 12;
+        }
+        String formattedMonthId = String.format("%02d", monthIdInt);
+
+        // Replace the month part in the date string
+        String replacedDate = date.substring(0, 2) + formattedMonthId + date.substring(4);
+
+        return replacedDate;
+    }
+
+    public static String getNextMonthDateId(String date) {
+        String monthId = date.substring(2, 4);
+        int monthIdInt = Integer.parseInt(monthId) + 1;
+
+        // Adjust monthIdInt to handle January (0) and format it to two digits
+        if (monthIdInt < 1) {
+            monthIdInt = 12;
+        }
+        String formattedMonthId = String.format("%02d", monthIdInt);
+
+        // Replace the month part in the date string
+        String replacedDate = date.substring(0, 2) + formattedMonthId + date.substring(4);
+
+        return replacedDate;
+    }
+    public static String getDay (String date){
+        return String.valueOf(date.charAt(0)) + String.valueOf(date.charAt(1));
+    }
+
     public static String getYear(String date){
 
         String year = String.valueOf(date.charAt(4)) +

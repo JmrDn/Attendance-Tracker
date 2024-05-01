@@ -38,26 +38,7 @@
             android:layout_marginEnd="20dp"
             tools:ignore="HardcodedText" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminateTint="@color/primaryColor"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:id="@+id/progressbar"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:id="@+id/recyclerview"/>
-        </RelativeLayout>
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -69,6 +50,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                  android:layout_marginBottom="20dp">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/recyclerview"/>
 
                 <LinearLayout
                     android:layout_width="200dp"

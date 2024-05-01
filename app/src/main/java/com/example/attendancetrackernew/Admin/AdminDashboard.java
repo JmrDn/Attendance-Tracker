@@ -40,6 +40,7 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
@@ -64,6 +65,9 @@ public class AdminDashboard extends AppCompatActivity {
         initWidgets();
         setUpAdminName();
         setUpCardClickListeners();
+
+
+
     }
     private void setUpAdminName() {
         adminDetails = new AdminSharedPreferences(AdminDashboard.this);
@@ -408,6 +412,16 @@ public class AdminDashboard extends AppCompatActivity {
                                     String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
                                     HashMap<String , Object>  employeeDetailsTimeOut = new HashMap<>();
 
+                                    if (LocalTime.parse(formattedTimeOut).isBefore(LocalTime.parse(timeOutSchedule))) {
+                                        Log.d("TAG", "BEFORE");
+                                        overTime = "0";
+                                    }
+                                    else {
+                                        leaveEarly = "0";
+                                        Log.d("TAG", "after");
+                                    }
+
+
                                     employeeDetailsTimeOut.put("timeOut", currentTimeWithAmAndPM);
                                     employeeDetailsTimeOut.put("late", late);
                                     employeeDetailsTimeOut.put("leaveEarly", leaveEarly);
@@ -490,9 +504,264 @@ public class AdminDashboard extends AppCompatActivity {
                                                 }
                                             });
 
+                                    //Payroll
+
+                                    String dayOfMonth = DateAndTimeUtils.getDay(dateId);
+                                    int dayOfMonthInt = Integer.parseInt(dayOfMonth);
+                                    Log.d("TAG", String.valueOf(dayOfMonthInt));
+
+
+                                    String semiMonthName = "";
+                                    String year = DateAndTimeUtils.getYear(dateId);
+                                    String payslipDate = "";
+
+                                    if (dayOfMonthInt > 25 && dayOfMonthInt < 32){
+
+                                        String firstMonth = DateAndTimeUtils.getMonth(dateId);
+                                        String secondMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getNextMonthDateId(dateId));
+
+                                        Log.d("TAG", "First Month:" + firstMonth);
+                                        Log.d("TAG", "Second Month:" + secondMonth);
+                                        Log.d("TAG", "1");
+
+                                        semiMonthName = firstMonth + "26To" + secondMonth + "10_" + year;
+
+                                        String upperCaseFirstLetterOfFirstMonth = firstMonth.substring(0,1).toUpperCase() + firstMonth.substring(1);
+                                        String upperCaseFirstLetterOfSecondMonth = secondMonth.substring(0,1).toUpperCase() + secondMonth.substring(1);
+
+                                        payslipDate = upperCaseFirstLetterOfFirstMonth + " 26 to " + upperCaseFirstLetterOfSecondMonth + " 10 " + year;
 
 
 
+                                    }
+
+                                    else if (dayOfMonthInt > 0 && dayOfMonthInt < 11){
+                                        String firstMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getPreviousMonthDateId(dateId));
+                                        String secondMonth = DateAndTimeUtils.getMonth(dateId);
+
+                                        Log.d("TAG", "First Month:" + firstMonth);
+                                        Log.d("TAG", "Second Month:" + secondMonth);
+                                        Log.d("TAG", "2");
+
+                                        semiMonthName = firstMonth + "26To" + secondMonth + "10_" + year;
+
+                                        String upperCaseFirstLetterOfFirstMonth = firstMonth.substring(0,1).toUpperCase() + firstMonth.substring(1);
+                                        String upperCaseFirstLetterOfSecondMonth = secondMonth.substring(0,1).toUpperCase() + secondMonth.substring(1);
+
+                                        payslipDate = upperCaseFirstLetterOfFirstMonth + " 26 to " + upperCaseFirstLetterOfSecondMonth + " 10 " + year;
+                                    }
+                                    else if (dayOfMonthInt > 10 && dayOfMonthInt < 26){
+                                        String month = DateAndTimeUtils.getMonth(dateId);
+
+                                        semiMonthName = month + "11To25_" + year;
+
+                                        String upperCaseMonth = month.substring(0,1).toUpperCase() + month.substring(1);
+
+                                        payslipDate = month + " 11 to 25 " + year;
+                                    }
+
+                                    Log.d("TAG", semiMonthName);
+
+                                    HashMap<String, Object> employeePaySlip = new HashMap<>();
+                                    HashMap<String, Object> employeePayRoll= new HashMap<>();
+
+                                    String finalSemiMonthName = semiMonthName;
+                                    String finalPayslipDate = payslipDate;
+
+
+                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                            .collection("payslip").document(semiMonthName).get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()){
+                                                        DocumentSnapshot documentSnapshot1 = task.getResult();
+
+                                                        if (documentSnapshot1.exists()){
+
+                                                            final int[] summaryOfWork = {Integer.parseInt(documentSnapshot1.getString("totalOvertime")),
+                                                                    Integer.parseInt(documentSnapshot1.getString("totalWorkedHours")),
+                                                                    Integer.parseInt(documentSnapshot1.getString("totalLeaveEarly")),
+                                                                    Integer.parseInt(documentSnapshot1.getString("totalLate"))};
+
+
+                                                            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                                                    .collection("attendance_year" + year).document(month+year)
+                                                                    .collection(dateId)
+                                                                    .document(itemChild).get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                DocumentSnapshot documentSnapshot2 = task.getResult();
+                                                                                if(documentSnapshot2.exists()){
+                                                                                    String timeIn = documentSnapshot2.getString("timeIn");
+                                                                                    String timeOut = documentSnapshot2.getString("timeOut");
+
+                                                                                    String timeInSchedule = "08:00"; //8AM
+                                                                                    String timeOutSchedule = "17:00"; //5PM
+
+                                                                                    String formattedTimeIn = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeIn);
+                                                                                    String formattedTimeOut = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeOut);
+
+                                                                                    String late = DateAndTimeUtils.getMinutes(timeInSchedule, formattedTimeIn);
+                                                                                    String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
+                                                                                    String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
+
+                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(timeIn, timeOut);
+                                                                                    if (LocalTime.parse(formattedTimeOut).isBefore(LocalTime.parse(timeOutSchedule))) {
+                                                                                        Log.d("TAG", "BEFORE");
+                                                                                        overTime = "0";
+                                                                                    }
+                                                                                    else {
+                                                                                        leaveEarly = "0";
+                                                                                        Log.d("TAG", "after");
+                                                                                    }
+
+
+                                                                                    summaryOfWork[0] += Integer.parseInt(overTime);
+                                                                                    summaryOfWork[1] += Integer.parseInt(totalHoursWorked);
+                                                                                    summaryOfWork[2] += Integer.parseInt(leaveEarly);
+                                                                                    summaryOfWork[3] += Integer.parseInt(late);
+
+                                                                                    employeePaySlip.put("totalLate", String.valueOf(summaryOfWork[3]));
+                                                                                    employeePaySlip.put("totalLeaveEarly", String.valueOf(summaryOfWork[2]));
+                                                                                    employeePaySlip.put("totalOvertime", String.valueOf(summaryOfWork[0]));
+                                                                                    employeePaySlip.put("totalWorkedHours", String.valueOf(summaryOfWork[1]));
+                                                                                    employeePaySlip.put("payslipID", finalSemiMonthName);
+                                                                                    employeePaySlip.put("payslipDate", finalPayslipDate);
+
+                                                                                    employeePayRoll.put("totalLate", String.valueOf(summaryOfWork[3]));
+                                                                                    employeePayRoll.put("totalLeaveEarly", String.valueOf(summaryOfWork[2]));
+                                                                                    employeePayRoll.put("totalOvertime", String.valueOf(summaryOfWork[0]));
+                                                                                    employeePayRoll.put("totalWorkedHours", String.valueOf(summaryOfWork[1]));
+                                                                                    employeePayRoll.put("payslipID", finalSemiMonthName);
+                                                                                    employeePayRoll.put("payslipDate", finalPayslipDate);
+                                                                                    employeePayRoll.put("employeeNumber", itemChild);
+
+                                                                                    FirebaseFirestore.getInstance().collection("employeesPayroll").document(finalSemiMonthName)
+                                                                                                    .collection(itemChild).document(finalSemiMonthName)
+                                                                                                    .update(employeePayRoll).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    if (task.isSuccessful()){
+                                                                                                        Log.d("TAG", "Successfully saved employee payslip data");
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d("TAG", "Failed to saved employee payslip data");
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+
+                                                                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                                                                            .collection("payslip").document(finalSemiMonthName)
+                                                                                            .update(employeePaySlip).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    if (task.isSuccessful()){
+                                                                                                        Log.d("TAG", "Successfully saved employee payslip data");
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d("TAG", "Failed to saved employee payslip data");
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+
+
+                                                        }
+                                                        else{
+                                                            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                                                    .collection("attendance_year" + year).document(month+year)
+                                                                    .collection(dateId)
+                                                                    .document(itemChild).get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                DocumentSnapshot documentSnapshot2 = task.getResult();
+                                                                                if(documentSnapshot2.exists()){
+                                                                                    String timeIn = documentSnapshot2.getString("timeIn");
+                                                                                    String timeOut = documentSnapshot2.getString("timeOut");
+
+                                                                                    String timeInSchedule = "08:00"; //8AM
+                                                                                    String timeOutSchedule = "17:00"; //5PM
+
+                                                                                    String formattedTimeIn = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeIn);
+                                                                                    String formattedTimeOut = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeOut);
+
+                                                                                    String late = DateAndTimeUtils.getMinutes(timeInSchedule, formattedTimeIn);
+                                                                                    String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
+                                                                                    String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
+
+                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(timeIn, timeOut);
+
+                                                                                    if (LocalTime.parse(formattedTimeOut).isBefore(LocalTime.parse(timeOutSchedule))) {
+                                                                                        Log.d("TAG", "BEFORE");
+                                                                                        overTime = "0";
+                                                                                    }
+                                                                                    else {
+                                                                                        leaveEarly = "0";
+                                                                                        Log.d("TAG", "after");
+                                                                                    }
+
+                                                                                    employeePaySlip.put("totalLate", late);
+                                                                                    employeePaySlip.put("totalLeaveEarly", leaveEarly);
+                                                                                    employeePaySlip.put("totalOvertime", overTime);
+                                                                                    employeePaySlip.put("totalWorkedHours", totalHoursWorked);
+                                                                                    employeePaySlip.put("payslipID", finalSemiMonthName);
+                                                                                    employeePaySlip.put("payslipDate", finalPayslipDate);
+
+                                                                                    employeePayRoll.put("totalLate", late);
+                                                                                    employeePayRoll.put("totalLeaveEarly", leaveEarly);
+                                                                                    employeePayRoll.put("totalOvertime", overTime);
+                                                                                    employeePayRoll.put("totalWorkedHours", totalHoursWorked);
+                                                                                    employeePayRoll.put("payslipID", finalSemiMonthName);
+                                                                                    employeePayRoll.put("payslipDate", finalPayslipDate);
+                                                                                    employeePayRoll.put("employeeNumber", itemChild);
+
+                                                                                    FirebaseFirestore.getInstance().collection("employeesPayroll").document(finalSemiMonthName)
+                                                                                            .collection(itemChild).document(finalSemiMonthName)
+                                                                                            .set(employeePayRoll).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    if (task.isSuccessful()){
+                                                                                                        Log.d("TAG", "Successfully saved employee payslip data");
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d("TAG", "Failed to saved employee payslip data");
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+
+                                                                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                                                                                            .collection("payslip").document(finalSemiMonthName)
+                                                                                            .set(employeePaySlip).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    if (task.isSuccessful()){
+                                                                                                        Log.d("TAG", "Successfully saved employee payslip data");
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d("TAG", "Failed to saved employee payslip data");
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+
+
+
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                }
+                                            });
 
                                 }
                             }

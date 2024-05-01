@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:orientation="vertical"
+    tools:context=".Admin.Reports.AdminPayrollReports">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
+        android:id="@+id/toolbar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payroll Reports"
+                android:fontFamily="@font/poppinsbold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/previous_arrow"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/previousMonthAction_Button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/monthDayYear_Textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Feb 2023"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/next_arrow"
+            android:layout_marginEnd="20dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/primaryColor"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:id="@+id/nextMonthAction_Button"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/recyclerview"/>
+</LinearLayout>

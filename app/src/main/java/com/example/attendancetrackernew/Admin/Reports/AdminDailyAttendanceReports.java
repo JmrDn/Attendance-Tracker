@@ -305,19 +305,12 @@ public class AdminDailyAttendanceReports extends AppCompatActivity {
 
                                 String timeIn = documentSnapshot.getString("timeIn");
                                 String timeOut = documentSnapshot.getString("timeOut");
+                                String late = documentSnapshot.getString("late");
+                                String leaveEarly = documentSnapshot.getString("leaveEarly");
+                                String overTime = documentSnapshot.getString("overTime");
 
                                if (!timeIn.isEmpty() && !timeOut.isEmpty() && timeIn != "" && timeOut != ""){
                                    noDataLayout.setVisibility(View.GONE);
-                                   String timeInSchedule = "08:00"; //8AM
-                                   String timeOutSchedule = "17:00"; //5PM
-                                   Log.d("TAG", "ATTENDANCE");
-
-                                   String formattedTimeIn = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeIn);
-                                   String formattedTimeOut = DateAndTimeUtils.convertAMAndPMFormatInto24HrsFormat(timeOut);
-
-                                   String late = DateAndTimeUtils.getMinutes(timeInSchedule, formattedTimeIn);
-                                   String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
-                                   String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
 
                                    list.add(new DailyReportsModel(fullName, employeeNum, position, late, leaveEarly, overTime, dateId));
                                    listForExcel.add(new DailyModelForExcel(fullName,position, timeIn, timeOut, late, leaveEarly, overTime));
@@ -362,7 +355,7 @@ public class AdminDailyAttendanceReports extends AppCompatActivity {
 
         noDataLayout = findViewById(R.id.noData_Layout);
 
-//        progressBar = findViewById(R.id.progressbar);
+
     }
 
     @Override

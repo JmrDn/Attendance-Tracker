@@ -103,27 +103,7 @@ public class DailyReportsAdapter extends RecyclerView.Adapter<DailyReportsAdapte
 
     }
 
-    private void retrieveDailyData( String employeeNum, ArrayList<SubDailyReportsModel> list,
-                                    SubDailyReportsAdapter myAdapter, String documentId, String year, String dateId) {
 
-        FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
-                .collection("attendance_year"+ year).document(documentId)
-                .collection(dateId).document(employeeNum)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-
-
-                        }
-                        else{
-                            Log.d("TAG", "Failed to retrieve attendance daily data");
-                        }
-                    }
-                });
-    }
 
     @Override
     public int getItemCount() {

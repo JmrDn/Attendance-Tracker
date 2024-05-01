@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.example.attendancetrackernew.Admin.Reports.AdminDailyAttendanceReports;
 import com.example.attendancetrackernew.Admin.Reports.AdminMonthlyAttendanceReports;
+import com.example.attendancetrackernew.Admin.Reports.AdminPayrollReports;
 import com.example.attendancetrackernew.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,8 +20,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class AdminReports extends AppCompatActivity {
     LinearLayout dailyReportsBtn;
-    LinearLayout weeklyReportsBtn;
+
     LinearLayout monthlyReports;
+    LinearLayout employeePayrollReports;
     Toolbar toolbar;
 
     @Override
@@ -43,13 +45,13 @@ public class AdminReports extends AppCompatActivity {
     private void setUpReportsClickListener() {
         dailyReportsBtn.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminDailyAttendanceReports.class));});
         monthlyReports.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminMonthlyAttendanceReports.class));});
+        employeePayrollReports.setOnClickListener(v->{startActivity(new Intent(getApplicationContext(), AdminPayrollReports.class));});
     }
 
     private void initWidgets() {
         dailyReportsBtn = findViewById(R.id.dailyTime_LinearLayout);
-        weeklyReportsBtn = findViewById(R.id.weeklyTime_LinearLayout);
         monthlyReports = findViewById(R.id.monthlyTime_LinearLayout);
-
+        employeePayrollReports = findViewById(R.id.empPayroll_LinearLayout);
         toolbar = findViewById(R.id.toolbar);
     }
 

@@ -135,6 +135,7 @@
                             android:text="Attendance"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
@@ -183,6 +184,7 @@
                             android:text="Scan"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold"
                             tools:ignore="HardcodedText" />
 
@@ -232,6 +234,7 @@
                             android:text="Reports"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold"
                             tools:ignore="HardcodedText" />
 
@@ -281,6 +284,7 @@
                             android:text="Employee Payroll"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold"
                             tools:ignore="HardcodedText" />
 
@@ -329,6 +333,7 @@
                             android:text="List of Employee"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold" />
 
                     </LinearLayout>
@@ -376,6 +381,7 @@
                             android:text="Logout"
                             android:textColor="@color/white"
                             android:textSize="14sp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold" />
 
                     </LinearLayout>
