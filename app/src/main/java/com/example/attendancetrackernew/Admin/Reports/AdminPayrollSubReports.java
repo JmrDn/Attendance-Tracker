@@ -93,18 +93,45 @@ public class AdminPayrollSubReports extends AppCompatActivity {
                                 for (DocumentSnapshot documentSnapshot: task.getResult()){
                                     String employeeName = documentSnapshot.getString("fullName");
                                     String employeeID = documentSnapshot.getString("employeeNumber");
-                                    String allowance = documentSnapshot.getString("allowance");
-                                    String basicSalary = documentSnapshot.getString("basicSalary");
-                                    String cashAdvance = documentSnapshot.getString("cashAdvance");
-                                    String sss = documentSnapshot.getString("sss");
-                                    String pagIbig = documentSnapshot.getString("pagibigFund");
-                                    String philHealth = documentSnapshot.getString("philHealth");
-                                    String rental = documentSnapshot.getString("rental");
-                                    String withHoldingTax = documentSnapshot.getString("withHoldingTax");
+                                    String allowance = "0";
+                                    String basicSalary = "0";
+                                    String cashAdvance = "0";
+                                    String sss = "0";
+                                    String pagIbig = "0";
+                                    String philHealth = "0";
+                                    String rental = "0";
+                                    String withHoldingTax = "0";
+                                    String position = documentSnapshot.getString("position");
+
+                                    if (documentSnapshot.contains("allowance")){
+                                         allowance = documentSnapshot.getString("allowance");
+                                    }
+                                    if (documentSnapshot.contains("basicSalary")){
+                                        basicSalary = documentSnapshot.getString("basicSalary");
+                                    }
+                                    if (documentSnapshot.contains("cashAdvance")){
+                                        cashAdvance = documentSnapshot.getString("cashAdvance");
+                                    }
+                                    if (documentSnapshot.contains("sss")){
+                                        sss = documentSnapshot.getString("sss");
+                                    }
+                                    if (documentSnapshot.contains("pagibigFund")){
+                                        pagIbig = documentSnapshot.getString("pagibigFund");
+                                    }
+                                    if (documentSnapshot.contains("philHealth")){
+                                        philHealth = documentSnapshot.getString("philHealth");
+                                    }
+                                    if (documentSnapshot.contains("rental")){
+                                        rental = documentSnapshot.getString("rental");
+                                    }
+                                    if (documentSnapshot.contains("withHoldingTax")){
+                                        withHoldingTax = documentSnapshot.getString("withHoldingTax");
+                                    }
+
 
                                     Log.d("TAG", "Reached data");
 
-                                    setUpData(employeeID,employeeName,allowance,basicSalary,cashAdvance,sss,pagIbig,philHealth,rental, withHoldingTax, payslipId, list, adapter);
+                                    setUpData(employeeID,employeeName,allowance,basicSalary,cashAdvance,sss,pagIbig,philHealth,rental, withHoldingTax, payslipId, list, adapter, position);
 
                                 }
 
@@ -281,7 +308,8 @@ public class AdminPayrollSubReports extends AppCompatActivity {
 
     private void setUpData(String employeeID, String employeeName, String allowance,
                            String basicSalary, String cashAdvance, String sss, String pagIbig,
-                           String philHealth, String rental, String withHoldingTax, String payslipId, ArrayList<PayrollSubReportsModel> list, PayrollSubReportsAdapter adapter) {
+                           String philHealth, String rental, String withHoldingTax, String payslipId,
+                           ArrayList<PayrollSubReportsModel> list, PayrollSubReportsAdapter adapter, String position) {
         FirebaseFirestore.getInstance().collection("employees").document(employeeID)
                 .collection("payslip").document(payslipId)
                 .get()
@@ -298,12 +326,113 @@ public class AdminPayrollSubReports extends AppCompatActivity {
                                 String totalOvertime = documentSnapshot.getString("totalOvertime");
                                 String totalWorkedHours = documentSnapshot.getString("totalWorkedHours");
 
+
+
+                                float totalWorkHoursFloat = (float) Integer.parseInt(totalWorkedHours) / 60;
+                                totalWorkedHours = String.valueOf(totalWorkHoursFloat);
+
+                                float overtimeFloat = (float) Integer.parseInt(totalOvertime) / 60;
+
                                 Log.d("TAG", "Exist");
 
-                                String totalSalary = "0";
-                                String grossSalary = "0";
-                                String totalDeduction = "0";
-                                String netSalary = "0";
+
+                                float basicSalaryFloat = 0;
+                                float lateDeduction = 0;
+                                int totalLateInt = Integer.parseInt(totalLate);
+
+                                //Computation of Salary
+
+                                if (position.equals("Engineer")){
+
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 192.31);
+                                    overtimeFloat = (float) (overtimeFloat * 192.31);
+
+                                    if (totalLateInt > 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 96.16;
+                                    else if (totalLateInt > 30  && totalLateInt <= 60)
+                                        lateDeduction = (float) 192.31;
+                                    else
+                                        lateDeduction = (float) ((Integer.parseInt(totalLate) / 60) * 192.31);
+
+                                }
+                                else if (position.equals("Draftsman")){
+
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                    overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                    if (totalLateInt> 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 46.4;
+                                    else if (totalLateInt > 30 && totalLateInt <= 60)
+                                        lateDeduction = (float) 92.79;
+                                    else
+                                        lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                }
+                                else if (position.equals("Safety Officer")){
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                    overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                    if (totalLateInt> 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 46.4;
+                                    else if (totalLateInt > 30 && totalLateInt <= 60)
+                                        lateDeduction = (float) 92.79;
+                                    else
+                                        lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                }
+                                else if (position.equals("Foreman")){
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 90.63);
+                                    overtimeFloat = (float) (overtimeFloat * 90.63);
+
+                                    if (totalLateInt> 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 45.32;
+                                    else if (totalLateInt > 30 && totalLateInt <= 60)
+                                        lateDeduction = (float) 90.63;
+                                    else
+                                        lateDeduction = (float) ((float) (totalLateInt / 60) * 90.63);
+                                }
+                                else if (position.equals("Office Staff")){
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                    overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                    if (totalLateInt> 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 46.4;
+                                    else if (totalLateInt > 30 && totalLateInt <= 60)
+                                        lateDeduction = (float) 92.79;
+                                    else
+                                        lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                }
+                                else if (position.equals("Labor")){
+                                    basicSalaryFloat = (float) (totalWorkHoursFloat * 62.5);
+                                    overtimeFloat = (float) (overtimeFloat * 62.5);
+
+                                    if (totalLateInt> 15 && totalLateInt < 30)
+                                        lateDeduction = (float) 31.25;
+                                    else if (totalLateInt > 30 && totalLateInt <= 60)
+                                        lateDeduction = (float) 62.5;
+                                    else
+                                        lateDeduction = (float) ((float) (totalLateInt / 60) * 62.5);
+                                }
+
+
+
+                                //Computation of total salary
+                                float totalSalaryFloat = (float) Integer.parseInt(allowance) + Integer.parseInt(basicSalary);
+
+                                //Computation of Gross Salary
+                                float grossSalaryFloat = (float) basicSalaryFloat + overtimeFloat + Integer.parseInt(allowance);
+
+                                //Computation of Total Deduction
+                                float totalDeductionFloat = (float) (Integer.parseInt(pagIbig) + Integer.parseInt(sss) + Integer.parseInt(philHealth)
+                                                            + Integer.parseInt(withHoldingTax) + Integer.parseInt(cashAdvance) + Integer.parseInt(rental) + lateDeduction);
+
+                                //Computation of Net Salary
+                                float netSalaryFloat = grossSalaryFloat - totalDeductionFloat;
+
+
+                                String totalSalary = String.valueOf(totalSalaryFloat);
+                                String grossSalary = String.valueOf(grossSalaryFloat);
+                                String totalDeduction = String.valueOf(totalDeductionFloat);
+                                String netSalary = String.valueOf(netSalaryFloat);
+
                                 //TODO Computation of Total Salary, Gross Salary, Total Deduction and Net Salary
 
                                 list.add(new PayrollSubReportsModel(employeeName, employeeID, basicSalary, allowance,
@@ -314,7 +443,6 @@ public class AdminPayrollSubReports extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
-
 
                         }
                     }

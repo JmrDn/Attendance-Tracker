@@ -455,54 +455,16 @@ public class AdminDashboard extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
-
+                                                    Log.d("TAG", "Successfully upload late, leaveEarly and Overtime");
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-
+                                                    Log.d("TAG", "Failed to upload late, leaveEarly and Overtime");
                                                 }
                                             });
 
-                                    FirebaseFirestore.getInstance().collection("employees").document(itemChild)
-                                            .collection("attendance_year" + year).document(month+year)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()){
-                                                        DocumentSnapshot documentSnapshot1 = task.getResult();
-
-                                                        if (documentSnapshot1.exists()){
-                                                            HashMap<String, Object> presentDayHM = new HashMap<>();
-                                                            if(documentSnapshot1.contains("presentDays")){
-                                                                String presentDay = documentSnapshot1.getString("presentDays");
-                                                                int presentDayInt = Integer.parseInt(presentDay) + 1;
-                                                                presentDayHM.put("presentDays", String.valueOf(presentDayInt));
-
-                                                            }
-                                                            else{
-                                                                presentDayHM.put("presentDay", "1");
-                                                            }
-
-                                                            FirebaseFirestore.getInstance().collection("employees").document(itemChild)
-                                                                    .collection("attendance_year" + year).document(month+year)
-                                                                    .update(presentDayHM)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()){
-                                                                                Log.d("TAG", "Present day updated");
-                                                                            }
-                                                                            else{
-                                                                                Log.d("TAG", "Failed to update Present day");
-                                                                            }
-                                                                        }
-                                                                    });
-                                                        }
-                                                    }
-                                                }
-                                            });
+                                
 
                                     //Payroll
 
@@ -608,7 +570,7 @@ public class AdminDashboard extends AppCompatActivity {
                                                                                     String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
                                                                                     String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
 
-                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(timeIn, timeOut);
+                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(formattedTimeIn, formattedTimeOut);
                                                                                     if (LocalTime.parse(formattedTimeOut).isBefore(LocalTime.parse(timeOutSchedule))) {
                                                                                         Log.d("TAG", "BEFORE");
                                                                                         overTime = "0";
@@ -698,7 +660,7 @@ public class AdminDashboard extends AppCompatActivity {
                                                                                     String leaveEarly = DateAndTimeUtils.getMinutes(formattedTimeOut, timeOutSchedule);
                                                                                     String overTime = DateAndTimeUtils.getMinutes(timeOutSchedule, formattedTimeOut);
 
-                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(timeIn, timeOut);
+                                                                                    String totalHoursWorked = DateAndTimeUtils.getMinutes(formattedTimeIn, formattedTimeOut);
 
                                                                                     if (LocalTime.parse(formattedTimeOut).isBefore(LocalTime.parse(timeOutSchedule))) {
                                                                                         Log.d("TAG", "BEFORE");
@@ -772,10 +734,9 @@ public class AdminDashboard extends AppCompatActivity {
                 @Override
                 public void run() {
                     calculateTotalLateLeaveEarlyAndOverTime(itemChild, month, year, dateId);
+
                 }
-            },5000);
-
-
+            },3000);
 
         });
 
@@ -794,15 +755,7 @@ public class AdminDashboard extends AppCompatActivity {
             String iString = String.valueOf(i);
 
 
-            if (iString.equals("1") ||
-                    iString.equals("2") ||
-                    iString.equals("3") ||
-                    iString.equals("4") ||
-                    iString.equals("5") ||
-                    iString.equals("6") ||
-                    iString.equals("7") ||
-                    iString.equals("8") ||
-                    iString.equals("9")){
+            if (i < 10){
 
                 month = "0" + iString;
             }
@@ -814,15 +767,7 @@ public class AdminDashboard extends AppCompatActivity {
                 String day = "";
                 String jString = String.valueOf(j);
 
-                if (jString.equals("1") ||
-                        jString.equals("2") ||
-                        jString.equals("3") ||
-                        jString.equals("4") ||
-                        jString.equals("5") ||
-                        jString.equals("6") ||
-                        jString.equals("7") ||
-                        jString.equals("8") ||
-                        jString.equals("9")){
+                if (j < 10){
 
                     day = "0" +  jString;
                 }
@@ -849,6 +794,7 @@ public class AdminDashboard extends AppCompatActivity {
                                             totalValue[1] += Integer.parseInt(documentSnapshot.getString("leaveEarly"));
                                             totalValue[2] += Integer.parseInt(documentSnapshot.getString("overTime"));
 
+                                            Log.d("TAG", "Calculating Data for Monthly Attendance");
                                         }
                                     }
                                 }
@@ -859,32 +805,69 @@ public class AdminDashboard extends AppCompatActivity {
             }
         }
 
+        HashMap<String , Object> totalValueDetails = new HashMap<>();
 
-      new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
-              HashMap<String , Object> totalValueDetails = new HashMap<>();
-              totalValueDetails.put("late", String.valueOf(totalValue[0]));
-              totalValueDetails.put("leaveEarly", String.valueOf(totalValue[1]));
-              totalValueDetails.put("overTime", String.valueOf(totalValue[2]));
-              totalValueDetails.put("monthId", documentId+year);
+        FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                .collection("attendance_year" + year).document(documentId+year)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot1 = task.getResult();
 
-              FirebaseFirestore.getInstance().collection("employees").document(itemChild)
-                      .collection("attendance_year"+ year).document(documentId+year)
-                      .set(totalValueDetails)
-                      .addOnSuccessListener(new OnSuccessListener<Void>() {
-                          @Override
-                          public void onSuccess(Void unused) {
-                              Log.d("TAG", "Success uploading total details");
-                          }
-                      }).addOnFailureListener(new OnFailureListener() {
-                          @Override
-                          public void onFailure(@NonNull Exception e) {
-                              Log.d("TAG", "Failed to upload total details");
-                          }
-                      });
-          }
-      },10000);
+                            if (documentSnapshot1.exists()){
+
+                                if(documentSnapshot1.contains("presentDays")){
+                                    String presentDay = documentSnapshot1.getString("presentDays");
+                                    int presentDayInt = Integer.parseInt(presentDay) + 1;
+                                    totalValueDetails.put("presentDays", String.valueOf(presentDayInt));
+                                    Log.d("TAG", "Present days exist and put");
+
+                                }
+                                else{
+                                    totalValueDetails.put("presentDays", "1");
+                                    Log.d("TAG", "Present days does not exist");
+                                }
+
+                            }
+                            else{
+                                totalValueDetails.put("presentDays", "1");
+                                Log.d("TAG", "Present days document does not exist");
+                            }
+                        }
+                        else{
+                            Log.d("TAG", "Task unsuccessfull for present days" + task.getException().getMessage());
+                        }
+                    }
+                });
+
+       
+       new Handler().postDelayed(new Runnable() {
+           @Override
+           public void run() {
+
+               totalValueDetails.put("late", String.valueOf(totalValue[0]));
+               totalValueDetails.put("leaveEarly", String.valueOf(totalValue[1]));
+               totalValueDetails.put("overTime", String.valueOf(totalValue[2]));
+               totalValueDetails.put("monthId", documentId+year);
+
+               FirebaseFirestore.getInstance().collection("employees").document(itemChild)
+                       .collection("attendance_year"+ year).document(documentId+year)
+                       .set(totalValueDetails)
+                       .addOnSuccessListener(new OnSuccessListener<Void>() {
+                           @Override
+                           public void onSuccess(Void unused) {
+                               Log.d("TAG", "Success upload total details of Monthly Attendance");
+                           }
+                       }).addOnFailureListener(new OnFailureListener() {
+                           @Override
+                           public void onFailure(@NonNull Exception e) {
+                               Log.d("TAG", "Failed to upload total details of Monthly Attendance");
+                           }
+                       });
+           }
+       },8000);
     }
 
     public interface EmployeeAlreadyTimeIn{

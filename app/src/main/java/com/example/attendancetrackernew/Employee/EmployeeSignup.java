@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
 
 public class EmployeeSignup extends AppCompatActivity {
     public static String  qrCodeImageURL = "";
-    String [] items = {"Office Staff", "Draftsman", "Engineer", "Labor"};
+    String [] items = {"Office Staff", "Draftsman", "Engineer", "Labor", "Foreman", "Safety Officer"};
     ArrayAdapter<String> itemAdapter;
     AutoCompleteTextView positionACT;
     TextInputLayout birthdayTIL;

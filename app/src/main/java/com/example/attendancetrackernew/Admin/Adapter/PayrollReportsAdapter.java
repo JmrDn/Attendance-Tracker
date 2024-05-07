@@ -70,77 +70,7 @@ public class PayrollReportsAdapter extends RecyclerView.Adapter<PayrollReportsAd
         });
 
 
-
-        //TODO Continue this adapter
     }
-
-
-
-
-    private void saveWork(HSSFWorkbook hssfWorkbook, Context context, String payslipId) {
-        StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
-        StorageVolume storageVolume = storageManager.getStorageVolumes().get(0); // Internal Storage
-
-        String path = "/Download/PayrollReports_" + payslipId + ".xls";
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            File fileOutput = new File(storageVolume.getDirectory().getPath() + path);
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(fileOutput);
-                hssfWorkbook.write(fileOutputStream);
-                fileOutputStream.close();
-                hssfWorkbook.close();
-                Toast.makeText(context, "File exported", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(context, "File failed to export", Toast.LENGTH_SHORT).show();
-                throw new RuntimeException(e);
-            }
-        }
-        else{
-            Toast.makeText(context, "Failed to Export, Applicable only for Android 11 and above", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void setUpDataForExcel(String employeeID, String employeeName, String allowance, String basicSalary, String cashAdvance, String sss, String pagIbig, String philHealth, String rental, String withHoldingTax, String payslipId, ArrayList<PayrollReportsForExcelModel> list, String payslipDate) {
-        FirebaseFirestore.getInstance().collection("employees").document(employeeID)
-                .collection("payslip").document(payslipId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if (documentSnapshot.exists()){
-                                String totalLate = documentSnapshot.getString("totalLate");
-                                String totalLeaveEarly = documentSnapshot.getString("totalLeaveEarly");
-                                String totalOvertime = documentSnapshot.getString("totalOvertime");
-                                String totalWorkedHours = documentSnapshot.getString("totalWorkedHours");
-
-                                Log.d("TAG", "Exist");
-
-                                String totalSalary = "0";
-                                String grossSalary = "0";
-                                String totalDeduction = "0";
-                                String netSalary = "0";
-                                //TODO Computation of Total Salary, Gross Salary, Total Deduction and Net Salary
-
-                                list.add(new PayrollReportsForExcelModel(employeeName, employeeID, basicSalary, allowance,
-                                        totalSalary, totalWorkedHours, totalOvertime,  grossSalary, pagIbig, sss, philHealth,
-                                        withHoldingTax, totalLate, cashAdvance, rental, totalDeduction, netSalary));
-
-                            }
-
-                            Log.d("TAG", "Size of listforexcel: " + String.valueOf(list.size()));
-
-
-                        }
-                    }
-                });
-    }
-
-
-
-
 
 
     @Override

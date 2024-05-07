@@ -295,25 +295,6 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
 
             String date = day+monthNum+year;
 
-
-            FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
-                    .collection("attendance_year"+ year)
-                    .document(monthWord+year).collection(date)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                QuerySnapshot querySnapshot = task.getResult();
-
-                                if (!querySnapshot.isEmpty() && querySnapshot != null){
-                                    Log.d("TAG", "Snapshot exist");
-                                    presentDays[0]++;
-                                }
-                            }
-                        }
-                    });
-
         }
 
         FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
@@ -331,12 +312,12 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
                                 String overTime = documentSnapshot.getString("overTime");
                                 String presentDays = "0";
 
-                                if(documentSnapshot.contains("presentDay")){
-                                    presentDays = documentSnapshot.getString("presentDay");
+                                if(documentSnapshot.contains("presentDays")){
+                                    presentDays = documentSnapshot.getString("presentDays");
                                 }
                                 noDataLayout.setVisibility(View.GONE);
                                 titleColumnLayout.setVisibility(View.VISIBLE);
-                                list.add(new MonthlyReportsModel(employeeNum, fullName, presentDays, late, leaveEarly, overTime));
+                                list.add(new MonthlyReportsModel(employeeNum, fullName, presentDays, late,overTime , leaveEarly));
 
                             }
 
@@ -393,5 +374,9 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 }
