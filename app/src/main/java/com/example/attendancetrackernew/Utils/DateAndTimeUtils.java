@@ -346,6 +346,17 @@ public class DateAndTimeUtils {
 
     }
 
+    public static String convertToDateWordFormatWithDayName(String date){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+
+        // Format the date to another format if needed
+        return localDate.format(DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy"));
+
+
+    }
+
     public static String getPreviousMonth(){
         LocalDate currentDate = LocalDate.now();
 

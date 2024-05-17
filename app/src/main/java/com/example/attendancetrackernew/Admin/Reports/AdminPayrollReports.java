@@ -179,7 +179,7 @@ public class AdminPayrollReports extends AppCompatActivity {
         String firstMonth = DateAndTimeUtils.getMonth(dateId);
         String year = DateAndTimeUtils.getYear(dateId);
 
-        return firstMonth + "11To25" + year;
+        return firstMonth + "11To25_" + year;
 
     }
 

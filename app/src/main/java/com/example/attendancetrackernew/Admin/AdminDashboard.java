@@ -767,13 +767,7 @@ public class AdminDashboard extends AppCompatActivity {
                 String day = "";
                 String jString = String.valueOf(j);
 
-                if (j < 10){
-
-                    day = "0" +  jString;
-                }
-                else {
-                    day =  jString;
-                }
+                day = (j < 10) ? "0" +  jString: jString;
 
                 String collectionName = day + month + year;
 //                Log.d("TAG", collectionName);
@@ -790,11 +784,25 @@ public class AdminDashboard extends AppCompatActivity {
 
                                     if (!querySnapshot.isEmpty() && querySnapshot != null){
                                         for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                                            totalValue[0] += Integer.parseInt(documentSnapshot.getString("late"));
-                                            totalValue[1] += Integer.parseInt(documentSnapshot.getString("leaveEarly"));
-                                            totalValue[2] += Integer.parseInt(documentSnapshot.getString("overTime"));
+                                            if (documentSnapshot.exists()){
 
-                                            Log.d("TAG", "Calculating Data for Monthly Attendance");
+                                                if (documentSnapshot.contains("late")){
+                                                    int late = Integer.parseInt(documentSnapshot.getString("late"));
+                                                    totalValue[0] += late;
+                                                }
+                                                if (documentSnapshot.contains("leaveEarly")){
+                                                    int leaveEarly = Integer.parseInt(documentSnapshot.getString("leaveEarly"));
+                                                    totalValue[1] += leaveEarly;
+                                                }
+                                                if (documentSnapshot.contains("overTime")){
+                                                    int overtime = Integer.parseInt(documentSnapshot.getString("overTime"));
+                                                    totalValue[2] += overtime;
+
+                                                }
+                                                
+
+                                                Log.d("TAG", "Calculating Data for Monthly Attendance");
+                                            }
                                         }
                                     }
                                 }
@@ -820,8 +828,9 @@ public class AdminDashboard extends AppCompatActivity {
 
                                 if(documentSnapshot1.contains("presentDays")){
                                     String presentDay = documentSnapshot1.getString("presentDays");
-                                    int presentDayInt = Integer.parseInt(presentDay) + 1;
-                                    totalValueDetails.put("presentDays", String.valueOf(presentDayInt));
+                                    int presentDayInt = Integer.parseInt(presentDay);
+                                    int totalPresentDay = presentDayInt + 1;
+                                    totalValueDetails.put("presentDays", String.valueOf(totalPresentDay));
                                     Log.d("TAG", "Present days exist and put");
 
                                 }

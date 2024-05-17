@@ -31,6 +31,12 @@
         android:theme="@style/Theme.AttendanceTrackerNEW"
         tools:targetApi="31">
         <activity
+            android:name=".Employee.EmployeeMyAttendance"
+            android:exported="false" />
+        <activity
+            android:name=".Employee.EmployeeForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".Admin.Reports.AdminPayrollSubReports"
             android:exported="false" />
         <activity

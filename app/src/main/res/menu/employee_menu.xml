@@ -4,11 +4,14 @@
     <item android:id="@+id/updateProfile"
         android:title="Update Profile"
         tools:ignore="HardcodedText" />
-    <item android:id="@+id/logout"
-        android:title="Logout"
+    <item android:id="@+id/myAttendance"
+        android:title="My Attendance"
         tools:ignore="HardcodedText" />
     <item android:id="@+id/payslip"
         android:title="Payslip"
+        tools:ignore="HardcodedText" />
+    <item android:id="@+id/logout"
+        android:title="Logout"
         tools:ignore="HardcodedText" />
 
 </menu>

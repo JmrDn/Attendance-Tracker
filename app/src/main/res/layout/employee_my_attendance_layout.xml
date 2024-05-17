@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/date_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="March 01, 2024"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time in: "
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/timeIn_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8:00 AM"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsmedium"
+            android:textSize="16sp"
+            android:layout_marginStart="5dp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time out: "
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/timeOut_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:00 PM"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsmedium"
+            android:textSize="16sp"
+            android:layout_marginStart="5dp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

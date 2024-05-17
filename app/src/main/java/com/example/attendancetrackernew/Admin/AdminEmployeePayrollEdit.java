@@ -62,6 +62,11 @@ public class AdminEmployeePayrollEdit extends AppCompatActivity {
         disableEditText();
         fillEmployeeInfo();
         fillPayRollInfo();
+        totalSalaryET.setEnabled(false);
+        totalDeductionET.setEnabled(false);
+        netSalaryET.setEnabled(false);
+        lateET.setEnabled(false);
+        overTimeET.setEnabled(false);
         
         saveBtn.setOnClickListener(v->{saveEmployeePayRoll();});
         resetBtn.setOnClickListener(v->{showResetDialog();});
@@ -78,6 +83,7 @@ public class AdminEmployeePayrollEdit extends AppCompatActivity {
     private void fillPayRollInfo() {
         Intent intent = getIntent();
         String employeeNum = intent.getStringExtra("employeeNumber");
+        String position = intent.getStringExtra("position");
         FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -113,6 +119,191 @@ public class AdminEmployeePayrollEdit extends AppCompatActivity {
                                     totalDeductionET.setText(documentSnapshot.getString("totalDeduction"));
                                 if(documentSnapshot.contains("netSalary"))
                                     netSalaryET.setText(documentSnapshot.getString("netSalary"));
+
+                                String dateId = DateAndTimeUtils.getDateIdFormat();
+                                String dayOfMonth = DateAndTimeUtils.getDay(dateId);
+                                int dayOfMonthInt = Integer.parseInt(dayOfMonth);
+                                Log.d("TAG", String.valueOf(dayOfMonthInt));
+
+
+                                String semiMonthName = "";
+                                String year = DateAndTimeUtils.getYear(dateId);
+                                String payslipDate = "";
+
+                                if (dayOfMonthInt > 25 && dayOfMonthInt < 32){
+
+                                    String firstMonth = DateAndTimeUtils.getMonth(dateId);
+                                    String secondMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getNextMonthDateId(dateId));
+
+                                    Log.d("TAG", "First Month:" + firstMonth);
+                                    Log.d("TAG", "Second Month:" + secondMonth);
+                                    Log.d("TAG", "1");
+
+                                    semiMonthName = firstMonth + "26To" + secondMonth + "10_" + year;
+
+                                    String upperCaseFirstLetterOfFirstMonth = firstMonth.substring(0,1).toUpperCase() + firstMonth.substring(1);
+                                    String upperCaseFirstLetterOfSecondMonth = secondMonth.substring(0,1).toUpperCase() + secondMonth.substring(1);
+
+                                    payslipDate = upperCaseFirstLetterOfFirstMonth + " 26 to " + upperCaseFirstLetterOfSecondMonth + " 10 " + year;
+
+
+
+                                }
+
+                                else if (dayOfMonthInt > 0 && dayOfMonthInt < 11){
+                                    String firstMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getPreviousMonthDateId(dateId));
+                                    String secondMonth = DateAndTimeUtils.getMonth(dateId);
+
+                                    Log.d("TAG", "First Month:" + firstMonth);
+                                    Log.d("TAG", "Second Month:" + secondMonth);
+                                    Log.d("TAG", "2");
+
+                                    semiMonthName = firstMonth + "26To" + secondMonth + "10_" + year;
+
+                                    String upperCaseFirstLetterOfFirstMonth = firstMonth.substring(0,1).toUpperCase() + firstMonth.substring(1);
+                                    String upperCaseFirstLetterOfSecondMonth = secondMonth.substring(0,1).toUpperCase() + secondMonth.substring(1);
+
+                                    payslipDate = upperCaseFirstLetterOfFirstMonth + " 26 to " + upperCaseFirstLetterOfSecondMonth + " 10 " + year;
+                                }
+                                else if (dayOfMonthInt > 10 && dayOfMonthInt < 26){
+                                    String month = DateAndTimeUtils.getMonth(dateId);
+
+                                    semiMonthName = month + "11To25_" + year;
+
+                                    String upperCaseMonth = month.substring(0,1).toUpperCase() + month.substring(1);
+
+                                    payslipDate = month + " 11 to 25 " + year;
+                                }
+
+
+                                FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
+                                        .collection("payslip").document(semiMonthName).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()){
+                                                    DocumentSnapshot documentSnapshot1 = task.getResult();
+                                                    if (documentSnapshot1.exists()){
+                                                        String totalLate = documentSnapshot1.getString("totalLate");
+                                                        String totalLeaveEarly = documentSnapshot1.getString("totalLeaveEarly");
+                                                        String totalOvertime = documentSnapshot1.getString("totalOvertime");
+                                                        String totalWorkedHours = documentSnapshot1.getString("totalWorkedHours");
+                                                        overTimeET.setText(totalOvertime + " m");
+
+
+                                                        float totalWorkHoursFloat = (float) Integer.parseInt(totalWorkedHours) / 60;
+                                                        totalWorkedHours = String.valueOf(totalWorkHoursFloat);
+
+                                                        float overtimeFloat = (float) Integer.parseInt(totalOvertime) / 60;
+
+                                                        Log.d("TAG", "Exist");
+
+
+                                                        float basicSalaryFloat = 0;
+                                                        float lateDeduction = 0;
+                                                        int totalLateInt = Integer.parseInt(totalLate);
+
+                                                        //Computation of Salary
+
+                                                        if (position.equals("Engineer")){
+
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 192.31);
+                                                            overtimeFloat = (float) (overtimeFloat * 192.31);
+
+                                                            if (totalLateInt > 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 96.16;
+                                                            else if (totalLateInt > 30  && totalLateInt <= 60)
+                                                                lateDeduction = (float) 192.31;
+                                                            else
+                                                                lateDeduction = (float) ((Integer.parseInt(totalLate) / 60) * 192.31);
+
+                                                        }
+                                                        else if (position.equals("Draftsman")){
+
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Safety Officer")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Foreman")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 90.63);
+                                                            overtimeFloat = (float) (overtimeFloat * 90.63);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 45.32;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 90.63;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 90.63);
+                                                        }
+                                                        else if (position.equals("Office Staff")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Labor")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 62.5);
+                                                            overtimeFloat = (float) (overtimeFloat * 62.5);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 31.25;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 62.5;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 62.5);
+                                                        }
+
+
+
+                                                        //Computation of total salary
+                                                        float totalSalaryFloat = (float) Integer.parseInt(allowanceET.getText().toString()) + Integer.parseInt(basicSalaryET.getText().toString());
+
+                                                        //Computation of Gross Salary
+                                                        float grossSalaryFloat = (float) basicSalaryFloat + overtimeFloat + Integer.parseInt(allowanceET.getText().toString());
+
+                                                        //Computation of Total Deduction
+                                                        float totalDeductionFloat = (float) (Integer.parseInt(pagibigFundET.getText().toString()) + Integer.parseInt(sssET.getText().toString()) + Integer.parseInt(philHealthET.getText().toString())
+                                                                + Integer.parseInt(withHoldingTaxET.getText().toString()) + Integer.parseInt(cashAdvanceET.getText().toString()) + Integer.parseInt(rentalET.getText().toString()) + lateDeduction);
+
+                                                        //Computation of Net Salary
+                                                        float netSalaryFloat = grossSalaryFloat - totalDeductionFloat;
+
+
+                                                        String totalSalary = String.valueOf(totalSalaryFloat);
+                                                        String grossSalary = String.valueOf(grossSalaryFloat);
+                                                        String totalDeduction = String.valueOf(totalDeductionFloat);
+                                                        String netSalary = String.valueOf(netSalaryFloat);
+
+                                                        totalSalaryET.setText(totalSalary);
+                                                        grossSalaryET.setText(grossSalary);
+                                                        totalDeductionET.setText(totalDeduction);
+                                                        netSalaryET.setText(netSalary);
+                                                    }
+                                                }
+                                            }
+                                        });
                             }
                             else{
                                 Log.d("TAG", "Document doesn't exit");
@@ -210,6 +401,8 @@ public class AdminEmployeePayrollEdit extends AppCompatActivity {
          String rental = rentalET.getText().toString();
          String totalDeduction = totalDeductionET.getText().toString();
          String netSalary = netSalaryET.getText().toString();
+         overTime = overTime.replace("m", "");
+         overTime = overTime.trim();
 
          //Calculate Total Salary
         int totalSalaryInt = Integer.parseInt(basicSalary) + Integer.parseInt(allowance);

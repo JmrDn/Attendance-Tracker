@@ -31,6 +31,7 @@ public class EmployeeLogin extends AppCompatActivity {
     ProgressBar progressBar;
     EmployeeSharedPreferences employeeDetails;
     TextView createNewAccBtn;
+    TextView forgotPasswordBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,10 @@ public class EmployeeLogin extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.GONE);
             loginUser();
+        });
+        
+        forgotPasswordBtn.setOnClickListener(v->{
+            startActivity(new Intent(EmployeeLogin.this, EmployeeForgotPassword.class));
         });
 
         createNewAccBtn.setOnClickListener(v1->{
@@ -175,6 +180,8 @@ public class EmployeeLogin extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_Button);
 
         createNewAccBtn = findViewById(R.id.createNewAcc_Textview);
+        
+        forgotPasswordBtn = findViewById(R.id.forgotPassword_TextView);
     }
 
     @Override

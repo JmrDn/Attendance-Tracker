@@ -415,14 +415,14 @@ public class AdminPayrollSubReports extends AppCompatActivity {
 
 
                                 //Computation of total salary
-                                float totalSalaryFloat = (float) Integer.parseInt(allowance) + Integer.parseInt(basicSalary);
+                                float totalSalaryFloat = (float) Integer.parseInt(allowance) + (float) Integer.parseInt(basicSalary);
 
                                 //Computation of Gross Salary
-                                float grossSalaryFloat = (float) basicSalaryFloat + overtimeFloat + Integer.parseInt(allowance);
+                                float grossSalaryFloat = (float) basicSalaryFloat + overtimeFloat + (float) Integer.parseInt(allowance);
 
                                 //Computation of Total Deduction
-                                float totalDeductionFloat = (float) (Integer.parseInt(pagIbig) + Integer.parseInt(sss) + Integer.parseInt(philHealth)
-                                                            + Integer.parseInt(withHoldingTax) + Integer.parseInt(cashAdvance) + Integer.parseInt(rental) + lateDeduction);
+                                float totalDeductionFloat = (float) (Integer.parseInt(pagIbig) + (float) Integer.parseInt(sss) + (float) Integer.parseInt(philHealth)
+                                                            + (float) Integer.parseInt(withHoldingTax) + (float) Integer.parseInt(cashAdvance) + (float) Integer.parseInt(rental) + (float) lateDeduction);
 
                                 //Computation of Net Salary
                                 float netSalaryFloat = grossSalaryFloat - totalDeductionFloat;
@@ -437,7 +437,7 @@ public class AdminPayrollSubReports extends AppCompatActivity {
 
                                 list.add(new PayrollSubReportsModel(employeeName, employeeID, basicSalary, allowance,
                                         totalSalary, totalWorkedHours, totalOvertime,  grossSalary, pagIbig, sss, philHealth,
-                                        withHoldingTax, totalLate, cashAdvance, rental, totalDeduction, netSalary));
+                                        withHoldingTax, String.valueOf(lateDeduction), cashAdvance, rental, totalDeduction, netSalary));
 
                                 if(adapter != null){
                                     adapter.notifyDataSetChanged();

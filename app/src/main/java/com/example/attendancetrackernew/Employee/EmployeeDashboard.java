@@ -218,6 +218,9 @@ public class EmployeeDashboard extends AppCompatActivity {
         else if (itemId == R.id.payslip){
             startActivity(new Intent(getApplicationContext(), EmployeePayslip.class));
         }
+        else if (itemId == R.id.myAttendance){
+            startActivity(new Intent(getApplicationContext(), EmployeeMyAttendance.class));
+        }
 
         return  true;
     }
