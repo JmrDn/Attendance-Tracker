@@ -283,6 +283,56 @@ public class AdminDailyAttendanceReports extends AppCompatActivity {
 
     }
 
+    private String convertToHoursMinutes(String time) {
+
+        int timeHour = Integer.parseInt(time) / 60;
+        int timeMinutes = Integer.parseInt(time) % 60;
+        String hour = "";
+        String min = "";
+
+        if (timeHour == 1){
+            hour = "hr";
+        }
+        else if (timeHour == 0){
+            hour = "";
+        }
+        else{
+            hour = "hrs";
+        }
+
+        if (timeMinutes == 1){
+            min = "min";
+        }
+        else if (timeMinutes == 0){
+            min = "";
+        }
+        else{
+            min = "mins";
+        }
+
+        String convertedHoursOfTime = "";
+        String convertedMinutesOfTime = "";
+
+
+
+        if (!hour.isEmpty()){
+
+            convertedHoursOfTime = timeHour + hour;
+        }
+
+
+        if(!min.isEmpty()){
+            convertedMinutesOfTime = timeMinutes + min;
+        }
+
+        if (hour.isEmpty() && min.isEmpty()){
+            return "0";
+        }
+        else{
+            return convertedHoursOfTime + " " + convertedMinutesOfTime;
+        }
+    }
+
     private void retrieveDailyData(String employeeNum, String fullName, String position, String dateId,
                                     ArrayList<DailyReportsModel> list) {
 
@@ -302,12 +352,21 @@ public class AdminDailyAttendanceReports extends AppCompatActivity {
                             DocumentSnapshot documentSnapshot = task.getResult();
 
                             if (documentSnapshot.exists()){
-
-                                String timeIn = documentSnapshot.getString("timeIn");
-                                String timeOut = documentSnapshot.getString("timeOut");
-                                String late = documentSnapshot.getString("late");
-                                String leaveEarly = documentSnapshot.getString("leaveEarly");
-                                String overTime = documentSnapshot.getString("overTime");
+                                String timeIn = "";
+                                String timeOut = "";
+                                String late = "0";
+                                String leaveEarly = "0";
+                                String overTime = "0";
+                                if (documentSnapshot.contains("timeIn"))
+                                    timeIn = documentSnapshot.getString("timeIn");
+                                if (documentSnapshot.contains("timeOut"))
+                                    timeOut = documentSnapshot.getString("timeOut");
+                                if(documentSnapshot.contains("late"))
+                                    late = documentSnapshot.getString("late");
+                                if(documentSnapshot.contains("leaveEarly"))
+                                    leaveEarly = documentSnapshot.getString("leaveEarly");
+                                if (documentSnapshot.contains("overTime"))
+                                    overTime = documentSnapshot.getString("overTime");
 
                                if (!timeIn.isEmpty() && !timeOut.isEmpty() && timeIn != "" && timeOut != ""){
                                    noDataLayout.setVisibility(View.GONE);

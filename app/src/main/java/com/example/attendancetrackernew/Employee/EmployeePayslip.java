@@ -18,6 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EmployeePayslip extends AppCompatActivity {
     LinearLayout exportButton;
@@ -72,9 +78,12 @@ public class EmployeePayslip extends AppCompatActivity {
         position_TextView.setText(userDetails.getPosition());
         toolbarTitleTV.setText("My Payslip");
         periodTV.setText("Period: " + DateAndTimeUtils.getPeriod());
+        String employeeNum = userDetails.getEmployeeNumber();
+        String semiMonthName = DateAndTimeUtils.getSemiMonthId();
+        String position = userDetails.getPosition();
 
 
-        FirebaseFirestore.getInstance().collection("employees").document(userDetails.getEmployeeNumber())
+        FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -109,6 +118,174 @@ public class EmployeePayslip extends AppCompatActivity {
                                     totalDeduction_TextView.setText(documentSnapshot.getString("totalDeduction"));
                                 if(documentSnapshot.contains("netSalary"))
                                     netSalary_TextView.setText(documentSnapshot.getString("netSalary"));
+
+                                FirebaseFirestore.getInstance().collection("employees").document(employeeNum)
+                                        .collection("payslip").document(semiMonthName).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()){
+                                                    DocumentSnapshot documentSnapshot1 = task.getResult();
+                                                    if (documentSnapshot1.exists()){
+                                                        String totalLate = documentSnapshot1.getString("totalLate");
+                                                        String totalLeaveEarly = documentSnapshot1.getString("totalLeaveEarly");
+                                                        String totalOvertime = documentSnapshot1.getString("totalOvertime");
+                                                        String totalWorkedHours = documentSnapshot1.getString("totalWorkedHours");
+                                                        overTime_TextView.setText(totalOvertime + " m");
+
+
+                                                        float totalWorkHoursFloat = (float) Integer.parseInt(totalWorkedHours) / 60;
+                                                        totalWorkedHours = String.valueOf(totalWorkHoursFloat);
+
+                                                        float overtimeFloat = (float) Integer.parseInt(totalOvertime) / 60;
+                                                        int overtimeHour = Integer.parseInt(totalOvertime) / 60;
+                                                        int overtimeMinutes = Integer.parseInt(totalOvertime) % 60;
+                                                        String hour = "";
+                                                        String min = "";
+
+
+                                                        if (overtimeHour == 1){
+                                                            hour = "hr";
+                                                        }
+                                                        else{
+                                                            hour = "hrs";
+                                                        }
+
+                                                        if (overtimeMinutes == 1){
+                                                            min = "min";
+                                                        }
+                                                        else{
+                                                            min = "mins";
+                                                        }
+
+                                                        String convertedHoursOfOvertime = "";
+                                                        String convertedMinutesOfOvertime = "";
+                                                        String convertedOvertime = "";
+
+
+                                                        if (!hour.isEmpty()){
+
+                                                            convertedHoursOfOvertime = overtimeHour + hour;
+                                                        }
+
+
+                                                        if(!min.isEmpty()){
+                                                            convertedMinutesOfOvertime = overtimeMinutes + min;
+                                                        }
+
+                                                        convertedOvertime = convertedHoursOfOvertime + " " + convertedMinutesOfOvertime;
+                                                        overTime_TextView.setText(convertedOvertime);
+
+
+
+                                                        Log.d("TAG", "Exist");
+
+
+                                                        float basicSalaryFloat = 0;
+                                                        float lateDeduction = 0;
+                                                        int totalLateInt = Integer.parseInt(totalLate);
+
+                                                        //Computation of Salary
+
+                                                        if (position.equals("Engineer")){
+
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 192.31);
+                                                            overtimeFloat = (float) (overtimeFloat * 192.31);
+
+                                                            if (totalLateInt > 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 96.16;
+                                                            else if (totalLateInt > 30  && totalLateInt <= 60)
+                                                                lateDeduction = (float) 192.31;
+                                                            else
+                                                                lateDeduction = (float) ((Integer.parseInt(totalLate) / 60) * 192.31);
+
+                                                        }
+                                                        else if (position.equals("Draftsman")){
+
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Safety Officer")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Foreman")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 90.63);
+                                                            overtimeFloat = (float) (overtimeFloat * 90.63);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 45.32;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 90.63;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 90.63);
+                                                        }
+                                                        else if (position.equals("Office Staff")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 92.79);
+                                                            overtimeFloat = (float) (overtimeFloat * 92.79);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 46.4;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 92.79;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 92.79);
+                                                        }
+                                                        else if (position.equals("Labor")){
+                                                            basicSalaryFloat = (float) (totalWorkHoursFloat * 62.5);
+                                                            overtimeFloat = (float) (overtimeFloat * 62.5);
+
+                                                            if (totalLateInt> 15 && totalLateInt < 30)
+                                                                lateDeduction = (float) 31.25;
+                                                            else if (totalLateInt > 30 && totalLateInt <= 60)
+                                                                lateDeduction = (float) 62.5;
+                                                            else
+                                                                lateDeduction = (float) ((float) (totalLateInt / 60) * 62.5);
+                                                        }
+
+
+
+                                                        //Computation of total salary
+                                                        float totalSalaryFloat = (float) Integer.parseInt(allowance_TextView.getText().toString()) + Integer.parseInt(basicSalary_TextView.getText().toString());
+
+                                                        //Computation of Gross Salary
+                                                        float grossSalaryFloat = (float) basicSalaryFloat + overtimeFloat + Integer.parseInt(allowance_TextView.getText().toString());
+
+                                                        //Computation of Total Deduction
+                                                        float totalDeductionFloat = (float) (Integer.parseInt(pagibigFund_TextView.getText().toString()) + Integer.parseInt(sss_TextView.getText().toString()) + Integer.parseInt(philHealth_TextView.getText().toString())
+                                                                + Integer.parseInt(witholdingTax_TextView.getText().toString()) + Integer.parseInt(cashAdvance_TextView.getText().toString()) + Integer.parseInt(rental_TextView.getText().toString()) + lateDeduction);
+
+                                                        //Computation of Net Salary
+                                                        float netSalaryFloat = grossSalaryFloat - totalDeductionFloat;
+
+
+                                                        String totalSalary = String.valueOf(totalSalaryFloat);
+                                                        String grossSalary = String.valueOf(grossSalaryFloat);
+                                                        String totalDeduction = String.valueOf(totalDeductionFloat);
+                                                        String netSalary = String.valueOf(netSalaryFloat);
+
+                                                        grossSalary_TextView.setText(grossSalary);
+                                                        totalDeduction_TextView.setText(totalDeduction);
+                                                        netSalary_TextView.setText(netSalary);
+
+                                                    }
+                                                }
+                                            }
+                                        });
                             }
                             else{
                                 Log.d("TAG", "Document doesn't exit");

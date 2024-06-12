@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.attendancetrackernew.R;
+import com.example.attendancetrackernew.SelectRole;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,7 +25,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -104,49 +107,76 @@ public class AdminSignup extends AppCompatActivity {
     }
 
     private void registerUser(String email, String fullName, String password) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
+       FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+               if (task.isSuccessful()){
+                   QuerySnapshot querySnapshot = task.getResult();
+                   if (querySnapshot != null && !querySnapshot.isEmpty()){
+                       boolean adminAccountExist = false;
+                       for (DocumentSnapshot documentSnapshot: task.getResult()){
+                           if (documentSnapshot.contains("accountType")){
+                               String accountType = documentSnapshot.getString("accountType");
+                               if (accountType.equals("adminAccount")){
+                                   adminAccountExist = true;
+                               }
 
-                        HashMap<String, Object> userDetails = new HashMap<>();
-                        userDetails.put("email", email);
-                        userDetails.put("fullName", fullName);
-                        userDetails.put("accountType", "adminAccount");
+                           }
+                       }
+                       if (adminAccountExist){
+                           Toast.makeText(AdminSignup.this, "You can only create one account for Admin, Failed to Sign up.", Toast.LENGTH_LONG).show();
+                           startActivity(new Intent(AdminSignup.this, SelectRole.class));
+                       }
+                       else{
+                           FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                                   .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                       @Override
+                                       public void onSuccess(AuthResult authResult) {
 
-                        adminDetails = new AdminSharedPreferences(AdminSignup.this);
-                        adminDetails.setFullName(fullName);
-                        adminDetails.setEmail(email);
+                                           HashMap<String, Object> userDetails = new HashMap<>();
+                                           userDetails.put("email", email);
+                                           userDetails.put("fullName", fullName);
+                                           userDetails.put("accountType", "adminAccount");
 
-                        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
-                                .set(userDetails)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            Log.d("TAG", "User details added to database");
-                                        }
-                                        else{
-                                            Log.d("TAG", "User details failed to add on database");
-                                        }
-                                    }
-                                });
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
-                                Toast.makeText(getApplicationContext(), "Account created Successfully", Toast.LENGTH_LONG).show();
-                            }
-                        },3000);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.getMessage());
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        hideProgressBarShowButton();
-                    }
-                });
+                                           adminDetails = new AdminSharedPreferences(AdminSignup.this);
+                                           adminDetails.setFullName(fullName);
+                                           adminDetails.setEmail(email);
+
+                                           FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
+                                                   .set(userDetails)
+                                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                       @Override
+                                                       public void onComplete(@NonNull Task<Void> task) {
+                                                           if (task.isSuccessful()){
+                                                               Log.d("TAG", "User details added to database");
+                                                           }
+                                                           else{
+                                                               Log.d("TAG", "User details failed to add on database");
+                                                           }
+                                                       }
+                                                   });
+                                           new Handler().postDelayed(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   startActivity(new Intent(getApplicationContext(), AdminDashboard.class));
+                                                   Toast.makeText(getApplicationContext(), "Account created Successfully", Toast.LENGTH_LONG).show();
+                                               }
+                                           },3000);
+                                       }
+                                   }).addOnFailureListener(new OnFailureListener() {
+                                       @Override
+                                       public void onFailure(@NonNull Exception e) {
+                                           Log.d("TAG", e.getMessage());
+                                           Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                           hideProgressBarShowButton();
+                                       }
+                                   });
+                       }
+
+                   }
+               }
+           }
+       });
     }
 
     private void hideProgressBarShowButton(){

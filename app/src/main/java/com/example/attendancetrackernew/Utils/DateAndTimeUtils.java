@@ -317,21 +317,98 @@ public class DateAndTimeUtils {
 
     }
     public static String getDateWordFormat (){return new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(new Date());}
-    public static String getPeriod(){
-        String dateToday = getDateIdFormat();
-        String dayString0 = String.valueOf(dateToday.charAt(0));
-        String dayString1 = String.valueOf(dateToday.charAt(1));
+    public static String getSemiMonthId(){
+        String dateId = getDateIdFormat();
+        String dayString0 = String.valueOf(dateId.charAt(0));
+        String dayString1 = String.valueOf(dateId.charAt(1));
         String dayString = dayString0 + dayString1;
         int day = Integer.parseInt(dayString);
 
-        String month = getMonth(dateToday).substring(0,1).toUpperCase() + getMonth(dateToday).substring(1);
+        String semiMonthName = "";
+        String year = DateAndTimeUtils.getYear(dateId);
 
-        if (day > 10 && day <=25){
 
-            return month + " 11-25, " + getYear(dateToday);
+        if (day > 25 && day < 32){
+
+            String month = DateAndTimeUtils.getMonth(dateId);
+
+            return month + "11To25_" + year;
+
         }
-        else{
-            return getPreviousMonth() + " 26 - " + month + " 11, 2024";
+
+        else if (day > 0 && day < 11){
+            String month = DateAndTimeUtils.getPreviousMonthDateId(dateId);
+
+            return month + "11To25_" + year;
+
+        }
+        else if (day > 10 && day < 26){
+
+            String firstMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getPreviousMonthDateId(dateId));
+            String secondMonth = DateAndTimeUtils.getMonth(dateId);
+
+            return firstMonth + "26To" + secondMonth + "10_" + year;
+
+
+        } else {
+            return  semiMonthName;
+
+        }
+    }
+    public static String getPeriod(){
+        String dateId = getDateIdFormat();
+        String dayString0 = String.valueOf(dateId.charAt(0));
+        String dayString1 = String.valueOf(dateId.charAt(1));
+        String dayString = dayString0 + dayString1;
+        int day = Integer.parseInt(dayString);
+
+//        String month = getMonth(dateToday).substring(0,1).toUpperCase() + getMonth(dateToday).substring(1);
+//
+//        if (day > 10 && day <=25){
+//
+//            return month + " 11-25, " + getYear(dateToday);
+//        }
+//        else{
+//            return getPreviousMonth() + " 26 - " + month + " 11, 2024";
+//        }
+
+        String semiMonthName = "";
+        String year = DateAndTimeUtils.getYear(dateId);
+        String payslipDate;
+
+        if (day > 25 && day < 32){
+
+            String month = DateAndTimeUtils.getMonth(dateId);
+
+            month = month.substring(0,1).toUpperCase() + month.substring(1);
+            payslipDate = month + " 11 to 25 " + year;
+
+            return  payslipDate;
+
+
+
+        }
+
+        else if (day > 0 && day < 11){
+            String month = DateAndTimeUtils.getMonth(DateAndTimeUtils.getPreviousMonthDateId(dateId));
+
+            payslipDate = month + " 11 to 25 " + year;
+            return  payslipDate;
+        }
+        else if (day > 10 && day < 26){
+
+            String firstMonth = DateAndTimeUtils.getMonth(DateAndTimeUtils.getPreviousMonthDateId(dateId));
+            String secondMonth = DateAndTimeUtils.getMonth(dateId);
+
+            String upperCaseFirstLetterOfFirstMonth = firstMonth.substring(0,1).toUpperCase() + firstMonth.substring(1);
+            String upperCaseFirstLetterOfSecondMonth = secondMonth.substring(0,1).toUpperCase() + secondMonth.substring(1);
+
+            payslipDate = upperCaseFirstLetterOfFirstMonth + " 26 to " + upperCaseFirstLetterOfSecondMonth + " 10 " + year;
+
+            return  payslipDate;
+        } else {
+            payslipDate = "";
+            return payslipDate;
         }
     }
 

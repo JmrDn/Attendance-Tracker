@@ -143,7 +143,7 @@ public class EmployeeDashboard extends AppCompatActivity {
 
             emailTV.setText(employeeDetails.getEmail());
             phoneNumberTV.setText(employeeDetails.getPhoneNumber());
-            positionTV.setText(employeeDetails.getBirthday());
+            positionTV.setText(employeeDetails.getPosition());
             birthDateTV.setText(employeeDetails.getBirthday());
             fullNameTV.setText(employeeDetails.getFullName());
             employeeNumTV.setText(employeeDetails.getEmployeeNumber());

@@ -312,6 +312,10 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
                                 String overTime = documentSnapshot.getString("overTime");
                                 String presentDays = "0";
 
+                                overTime = convertToHoursMinutes(overTime);
+                                late = convertToHoursMinutes(late);
+                                leaveEarly = convertToHoursMinutes(leaveEarly);
+
                                 if(documentSnapshot.contains("presentDays")){
                                     presentDays = documentSnapshot.getString("presentDays");
                                 }
@@ -327,6 +331,56 @@ public class AdminMonthlyAttendanceReports extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private String convertToHoursMinutes(String time) {
+
+        int timeHour = Integer.parseInt(time) / 60;
+        int timeMinutes = Integer.parseInt(time) % 60;
+        String hour = "";
+        String min = "";
+
+        if (timeHour == 1){
+            hour = "hr";
+        }
+        else if (timeHour == 0){
+            hour = "";
+        }
+        else{
+            hour = "hrs";
+        }
+
+        if (timeMinutes == 1){
+            min = "min";
+        }
+        else if (timeMinutes == 0){
+            min = "";
+        }
+        else{
+            min = "mins";
+        }
+
+        String convertedHoursOfTime = "";
+        String convertedMinutesOfTime = "";
+
+
+
+        if (!hour.isEmpty()){
+
+            convertedHoursOfTime = timeHour + hour;
+        }
+
+
+        if(!min.isEmpty()){
+            convertedMinutesOfTime = timeMinutes + min;
+        }
+
+        if (hour.isEmpty() && min.isEmpty()){
+            return "0";
+        }
+        else{
+            return convertedHoursOfTime + " " + convertedMinutesOfTime;
+        }
     }
 
     private void setUpMonthView() {
