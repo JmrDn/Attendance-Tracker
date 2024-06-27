@@ -243,55 +243,6 @@
 
                 <!-- Row 2 Column 2-->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/employeePayroll_CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="@color/green"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp"
-                    tools:ignore="KeyboardInaccessibleWidget">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="25dp"
-                            android:layout_marginBottom="1dp"
-                            android:maxHeight="50dp"
-                            android:src="@drawable/ic_white_employee_payroll"
-                            tools:ignore="ContentDescription"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Employee Payroll"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textAlignment="center"
-                            android:fontFamily="@font/poppinsbold"
-                            tools:ignore="HardcodedText" />
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <!-- Row 3 Column 1-->
-                <androidx.cardview.widget.CardView
                     android:id="@+id/listOfEmployee_CardView"
                     android:layout_width="0dp"
                     android:layout_height="55dp"
@@ -338,7 +289,7 @@
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <!-- Row 3 Column 2-->
+                <!-- Row 3 Column 1-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/logout_CardView"
                     android:layout_width="0dp"
@@ -383,6 +334,56 @@
                             android:textSize="14sp"
                             android:textAlignment="center"
                             android:fontFamily="@font/poppinsbold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!-- Row 3 Column 2-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/employeePayroll_CardView"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/green"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    android:visibility="gone"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="1dp"
+                            android:maxHeight="50dp"
+                            android:src="@drawable/ic_white_employee_payroll"
+                            tools:ignore="ContentDescription"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Employee Payroll"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/poppinsbold"
+                            tools:ignore="HardcodedText" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
